@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NikahPath — marketing site
 
-## Getting Started
+A marketing site for **NikahPath**, a marriage introduction service for
+practicing Muslims. Operated by **Al-Fur'qan International Missionary**.
+Deep-emerald palette, Fraunces + Inter typography.
 
-First, run the development server:
+Marketing pages only — there is no auth or app. All "Log in" / "Create Profile"
+links point at a placeholder `app.nikahpath.com` subdomain (see `src/data/site.ts`).
+
+All page structure, features, plans and copy are original to this project.
+
+## Stack
+
+- Next.js 16 (App Router, Turbopack) · React 19 · TypeScript
+- Tailwind CSS v4 (config lives in `src/app/globals.css` via `@theme`)
+- `next/font` for Fraunces (display) and Inter (body)
+- All content is static; blog posts are generated with `generateStaticParams`
+
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev     # http://localhost:3000
+npm run build   # production build
+npm run start   # serve the production build
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Requires Node >= 18.17 (developed on Node 20).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/
+│   ├── layout.tsx            # fonts, metadata, Header + Footer
+│   ├── page.tsx              # Home
+│   ├── approach/             # process + rules + who runs it (merged page)
+│   ├── members/              # sample member profiles
+│   ├── independent-wali/     # appointed-wali register + request flow + rules
+│   ├── widows-and-widowers/  # category page: why, how, members, FAQ
+│   ├── for-guardians/        # the wali's role
+│   ├── membership/           # plans, comparison table, FAQ, matchmaking
+│   ├── stories/              # success-story submission
+│   ├── journal/              # index + [slug] articles, grouped by theme
+│   ├── terms/ · privacy/     # placeholder legal pages
+│   ├── not-found.tsx
+│   └── globals.css           # design tokens + prose styles
+├── components/               # Header, Footer, Button, ProfileCard, Faq, PricingPlans, ...
+└── data/
+    ├── site.ts               # name, nav, footerNav, URLs, stats, copyright holder
+    ├── profiles.ts           # sample sisters / brothers, lifeStage, widowedMembers
+    ├── walis.ts              # independent-wali register + guided rules
+    ├── posts.ts              # journal articles + theme groups
+    └── pricing.ts            # plan prices, feature matrix, membership FAQ
+```
 
-## Learn More
+## Rebranding
 
-To learn more about Next.js, take a look at the following resources:
+Change the name, tagline, URLs, headline stats and copyright holder in
+`src/data/site.ts`. Change the palette (currently deep emerald `#0b5d42`) in the
+`@theme` block at the top of `src/app/globals.css`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `PROJECT-NOTES.md` — project scope and structure.
+- Sample profiles, testimonials and success stories are invented for layout
+  purposes. Replace before any real use.
+- Legal pages are placeholders and must be replaced with reviewed copy.
