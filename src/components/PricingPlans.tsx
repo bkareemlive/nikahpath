@@ -117,22 +117,22 @@ export function PricingPlans() {
         </div>
 
         {/* Lifetime */}
-        <div className="flex flex-col rounded-2xl border border-primary bg-primary-bright p-7 text-ink">
+        <div className="flex flex-col rounded-2xl border border-primary-dark bg-primary-darker p-7 text-white">
           <div className="flex items-center gap-2">
             <h3 className="font-display text-xl font-semibold">Lifetime</h3>
-            <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-semibold text-white">
+            <span className="rounded-full bg-gold/20 px-2 py-0.5 text-[11px] font-semibold text-gold-light">
               Best value
             </span>
           </div>
-          <p className="mt-1 text-sm text-ink/70">Pay once. Keep it for good.</p>
+          <p className="mt-1 text-sm text-white/60">Pay once. Keep it for good.</p>
           <p className="mt-6">
             <span className="font-display text-4xl font-semibold">
               ${plans.lifetime.toFixed(2)}
             </span>
-            <span className="text-sm text-ink/60"> one-time</span>
+            <span className="text-sm text-white/60"> one-time</span>
           </p>
-          <p className="mt-1 text-xs text-ink/60">No renewals and no monthly charge.</p>
-          <ul className="mt-6 space-y-3 text-sm text-ink/80">
+          <p className="mt-1 text-xs text-white/60">No renewals and no monthly charge.</p>
+          <ul className="mt-6 space-y-3 text-sm text-white/80">
             {[
               "Everything in Full Access",
               "No monthly cap on requests or matches",
@@ -142,7 +142,7 @@ export function PricingPlans() {
               "Access that does not expire",
             ].map((f) => (
               <li key={f} className="flex gap-2.5">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-gold-light">
                   <path d="M20 6 9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span>{f}</span>
@@ -150,11 +150,11 @@ export function PricingPlans() {
             ))}
           </ul>
           <div className="mt-8">
-            <Button href={site.registerUrl} className="w-full">
+            <Button href={site.registerUrl} variant="light" className="w-full">
               Choose Lifetime
             </Button>
           </div>
-          <p className="mt-3 text-center text-xs text-ink/50">
+          <p className="mt-3 text-center text-xs text-white/50">
             Cheaper than a year of Full Access
           </p>
         </div>
