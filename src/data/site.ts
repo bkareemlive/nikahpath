@@ -4,9 +4,9 @@ export const site = {
   description:
     "A marriage introduction service for practicing Muslims. Read full profiles first, involve the Wali from the start, and move towards a real meeting rather than an endless chat.",
   url: "https://www.nikahpath.com",
-  appUrl: "https://app.nikahpath.com",
-  loginUrl: "https://app.nikahpath.com/login",
-  registerUrl: "https://app.nikahpath.com/register",
+  loginUrl: "/login",
+  registerUrl: "/register",
+  dashboardUrl: "/dashboard",
   instagram: "https://instagram.com/nikahpath",
   email: "salam@nikahpath.com",
   status: "A newly launched service",
