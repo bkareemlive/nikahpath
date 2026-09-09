@@ -6,11 +6,21 @@ import { Faq } from "@/components/Faq";
 import { PricingPlans } from "@/components/PricingPlans";
 import { planFeatures, pricingFaq } from "@/data/pricing";
 import { site } from "@/data/site";
+import { createClient } from "@/lib/supabase/server";
+import { planLabel } from "@/lib/plan";
 
 export const metadata: Metadata = {
   title: "Membership",
   description:
     "Free to create a profile and browse. Choose Full Access or a one-time Lifetime plan to match, chat and reach a Wali.",
+};
+
+const NOTICES: Record<string, { tone: "ok" | "warn" | "err"; text: string }> = {
+  canceled: { tone: "warn", text: "Checkout was cancelled — no charge was made." },
+  payments_unavailable: { tone: "err", text: "Payments are not set up yet. Please check back soon." },
+  price_missing: { tone: "err", text: "That plan is not available for purchase right now." },
+  checkout_failed: { tone: "err", text: "Could not start checkout. Please try again." },
+  no_customer: { tone: "err", text: "No billing account found for you yet." },
 };
 
 const Cell = ({ value }: { value: boolean | string }) => {
@@ -25,7 +35,29 @@ const Cell = ({ value }: { value: boolean | string }) => {
   );
 };
 
-export default function PricingPage() {
+export default async function PricingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string; canceled?: string }>;
+}) {
+  const sp = await searchParams;
+  const noticeKey = sp.canceled ? "canceled" : sp.error;
+  const notice = noticeKey ? NOTICES[noticeKey] : undefined;
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  let currentPlan: string | null = null;
+  if (user) {
+    const { data } = await supabase
+      .from("profiles")
+      .select("plan")
+      .eq("id", user.id)
+      .maybeSingle<{ plan: string }>();
+    currentPlan = data?.plan ?? "free";
+  }
+
   return (
     <>
       <section className="border-b border-line bg-cream py-16">
@@ -41,7 +73,25 @@ export default function PricingPage() {
 
       <section className="py-16">
         <Container>
-          <PricingPlans />
+          {notice && (
+            <p
+              className={`mx-auto mb-8 max-w-2xl rounded-xl border px-4 py-3 text-center text-sm ${
+                notice.tone === "err"
+                  ? "border-red-200 bg-red-50 text-red-700"
+                  : notice.tone === "warn"
+                    ? "border-gold/30 bg-gold-light text-gold"
+                    : "border-primary/25 bg-primary-light text-primary-dark"
+              }`}
+            >
+              {notice.text}
+            </p>
+          )}
+          {user && currentPlan && currentPlan !== "free" && (
+            <p className="mx-auto mb-8 max-w-2xl rounded-xl border border-primary/25 bg-primary-light px-4 py-3 text-center text-sm text-primary-dark">
+              You are on the <strong>{planLabel(currentPlan)}</strong> plan.
+            </p>
+          )}
+          <PricingPlans loggedIn={Boolean(user)} currentPlan={currentPlan} />
           <p className="mt-8 text-center text-sm text-muted">
             Every paid plan includes a 7-day money-back guarantee.
           </p>

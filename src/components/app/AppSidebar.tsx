@@ -10,6 +10,7 @@ const baseLinks = [
   { href: "/browse", label: "Browse" },
   { href: "/requests", label: "Requests" },
   { href: "/matches", label: "Matches" },
+  { href: "/viewed", label: "Who viewed you" },
   { href: "/profile", label: "My profile" },
 ];
 

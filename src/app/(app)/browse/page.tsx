@@ -65,7 +65,14 @@ export default async function BrowsePage({
     .range(from, from + PAGE_SIZE - 1)
     .returns<ProfileRow[]>();
 
-  const results = data ?? [];
+  // Lifetime members get a small visibility boost on the first page.
+  const results =
+    page === 1
+      ? [...(data ?? [])].sort(
+          (a, b) =>
+            (b.plan === "lifetime" ? 1 : 0) - (a.plan === "lifetime" ? 1 : 0),
+        )
+      : (data ?? []);
   const total = count ?? 0;
   const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 

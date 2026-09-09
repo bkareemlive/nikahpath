@@ -6,7 +6,12 @@ import type { ProfileRow } from "@/lib/supabase/types";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ upgraded?: string }>;
+}) {
+  const upgraded = (await searchParams).upgraded === "1";
   const supabase = await createClient();
   const {
     data: { user },
@@ -88,6 +93,12 @@ export default async function DashboardPage() {
 
   return (
     <div>
+      {upgraded && (
+        <p className="mb-6 rounded-xl border border-primary/25 bg-primary-light px-4 py-3 text-sm text-primary-dark">
+          Thank you. Your payment went through — your plan will activate within a
+          moment.
+        </p>
+      )}
       <h1 className="font-display text-3xl font-semibold text-ink">
         Assalamu alaikum{profile.alias ? `, ${profile.alias}` : ""}.
       </h1>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "./Button";
 import { plans, promo } from "@/data/pricing";
 import { site } from "@/data/site";
+import { startCheckout, openBillingPortal } from "@/lib/actions/billing";
 
 const check = (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-primary">
@@ -11,8 +12,41 @@ const check = (
   </svg>
 );
 
-export function PricingPlans() {
+const primaryBtn =
+  "flex h-11 w-full items-center justify-center rounded-md bg-primary px-5 text-sm font-semibold text-white transition-colors hover:bg-primary-dark";
+const disabledBtn =
+  "flex h-11 w-full items-center justify-center rounded-md bg-cream-deep px-5 text-sm font-semibold text-muted";
+
+function CheckoutButton({
+  plan,
+  cycle,
+  label,
+}: {
+  plan: "full_access" | "lifetime";
+  cycle: "monthly" | "sixMonth";
+  label: string;
+}) {
+  return (
+    <form action={startCheckout} className="w-full">
+      <input type="hidden" name="plan" value={plan} />
+      <input type="hidden" name="cycle" value={cycle} />
+      <button type="submit" className={primaryBtn}>
+        {label}
+      </button>
+    </form>
+  );
+}
+
+export function PricingPlans({
+  loggedIn = false,
+  currentPlan = null,
+}: {
+  loggedIn?: boolean;
+  currentPlan?: string | null;
+}) {
   const [cycle, setCycle] = useState<"monthly" | "sixMonth">("monthly");
+  const hasLifetime = currentPlan === "lifetime";
+  const hasFullAccess = currentPlan === "full_access";
 
   const regularFullAccess =
     cycle === "monthly"
@@ -97,9 +131,13 @@ export function PricingPlans() {
             ))}
           </ul>
           <div className="mt-8">
-            <Button href={site.registerUrl} variant="secondary" className="w-full">
-              Create free profile
-            </Button>
+            {loggedIn ? (
+              <span className={disabledBtn}>Included with every account</span>
+            ) : (
+              <Button href={site.registerUrl} variant="secondary" className="w-full">
+                Create free profile
+              </Button>
+            )}
           </div>
         </div>
 
@@ -144,9 +182,24 @@ export function PricingPlans() {
             ))}
           </ul>
           <div className="mt-8">
-            <Button href={site.registerUrl} className="w-full">
-              Choose Full Access
-            </Button>
+            {!loggedIn ? (
+              <Button href={`${site.loginUrl}?next=/membership`} className="w-full">
+                Choose Full Access
+              </Button>
+            ) : hasLifetime ? (
+              <span className={disabledBtn}>You have Lifetime</span>
+            ) : hasFullAccess ? (
+              <div className="grid gap-2">
+                <span className={disabledBtn}>Current plan</span>
+                <form action={openBillingPortal}>
+                  <button type="submit" className="w-full text-xs font-medium text-primary hover:underline">
+                    Manage billing
+                  </button>
+                </form>
+              </div>
+            ) : (
+              <CheckoutButton plan="full_access" cycle={cycle} label="Choose Full Access" />
+            )}
           </div>
         </div>
 
@@ -190,9 +243,15 @@ export function PricingPlans() {
             ))}
           </ul>
           <div className="mt-8">
-            <Button href={site.registerUrl} className="w-full">
-              Choose Lifetime
-            </Button>
+            {!loggedIn ? (
+              <Button href={`${site.loginUrl}?next=/membership`} className="w-full">
+                Choose Lifetime
+              </Button>
+            ) : hasLifetime ? (
+              <span className={disabledBtn}>You have Lifetime</span>
+            ) : (
+              <CheckoutButton plan="lifetime" cycle={cycle} label="Choose Lifetime" />
+            )}
           </div>
           <p className="mt-3 text-center text-xs text-muted">
             Cheaper than a year of Full Access

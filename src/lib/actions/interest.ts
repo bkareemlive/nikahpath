@@ -3,11 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { limitsFor } from "@/lib/plan";
 
 export type InterestState = { error?: string; ok?: boolean };
 export type RespondState = { error?: string; ok?: boolean; matched?: boolean };
-
-const MONTHLY_LIMIT = 10;
 
 export async function sendInterest(
   _prev: InterestState,
@@ -34,12 +33,12 @@ export async function sendInterest(
     .select("plan")
     .eq("id", user.id)
     .maybeSingle<{ plan: string }>();
-  const plan = me?.plan ?? "free";
+  const limits = limitsFor(me?.plan);
 
-  if (plan === "free") {
+  if (limits.interestRequestsPerMonth === 0) {
     return { error: "Upgrade to Full Access or Lifetime to send interest requests." };
   }
-  if (plan === "full_access") {
+  if (limits.interestRequestsPerMonth !== null) {
     const since = new Date();
     since.setDate(since.getDate() - 30);
     const { count } = await supabase
@@ -47,8 +46,10 @@ export async function sendInterest(
       .select("id", { count: "exact", head: true })
       .eq("sender_id", user.id)
       .gte("created_at", since.toISOString());
-    if ((count ?? 0) >= MONTHLY_LIMIT) {
-      return { error: `You have used all ${MONTHLY_LIMIT} requests for this month.` };
+    if ((count ?? 0) >= limits.interestRequestsPerMonth) {
+      return {
+        error: `You have used all ${limits.interestRequestsPerMonth} requests for this month.`,
+      };
     }
   }
 
