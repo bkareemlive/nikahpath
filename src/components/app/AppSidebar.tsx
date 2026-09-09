@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { Logo } from "@/components/Logo";
 import { signOut } from "@/lib/actions/auth";
 
-const links = [
+const baseLinks = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/browse", label: "Browse" },
   { href: "/requests", label: "Requests" },
@@ -18,13 +18,18 @@ export function AppSidebar({
   alias,
   publicRef,
   plan,
+  isWali = false,
 }: {
   email: string;
   alias: string | null;
   publicRef: string | null;
   plan: string;
+  isWali?: boolean;
 }) {
   const pathname = usePathname();
+  const links = isWali
+    ? [...baseLinks, { href: "/wali", label: "Guardian inbox" }]
+    : baseLinks;
   const planLabel =
     plan === "lifetime" ? "Lifetime" : plan === "full_access" ? "Full Access" : "Free";
 

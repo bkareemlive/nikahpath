@@ -13,13 +13,43 @@ export default async function DashboardPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user.id)
-    .maybeSingle<ProfileRow>();
+  const [{ data: profile }, { count: waliCount }] = await Promise.all([
+    supabase.from("profiles").select("*").eq("id", user.id).maybeSingle<ProfileRow>(),
+    supabase
+      .from("independent_walis")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", user.id),
+  ]);
 
   if (!profile || profile.status === "draft") {
+    if ((waliCount ?? 0) > 0) {
+      return (
+        <div className="max-w-lg rounded-2xl border border-line bg-white p-8 shadow-card">
+          <h1 className="font-display text-2xl font-semibold text-ink">
+            Assalamu alaikum.
+          </h1>
+          <p className="mt-2 text-sm leading-relaxed text-muted">
+            You are set up as an appointed guardian. Requests from sisters who
+            have no family Wali available will appear in your inbox.
+          </p>
+          <div className="mt-5">
+            <Link
+              href="/wali"
+              className="inline-flex h-11 items-center rounded-md bg-primary px-6 text-sm font-semibold text-white hover:bg-primary-dark"
+            >
+              Open the guardian inbox →
+            </Link>
+          </div>
+          <p className="mt-4 text-xs text-muted">
+            If you also want a marriage profile of your own,{" "}
+            <Link href="/onboarding" className="text-primary hover:underline">
+              set one up here
+            </Link>
+            .
+          </p>
+        </div>
+      );
+    }
     redirect("/onboarding");
   }
 

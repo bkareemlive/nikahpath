@@ -12,11 +12,13 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
 
   if (!user) redirect("/login");
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user.id)
-    .maybeSingle<ProfileRow>();
+  const [{ data: profile }, { count: waliCount }] = await Promise.all([
+    supabase.from("profiles").select("*").eq("id", user.id).maybeSingle<ProfileRow>(),
+    supabase
+      .from("independent_walis")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", user.id),
+  ]);
 
   return (
     <div className="flex min-h-full flex-col bg-cream lg:flex-row">
@@ -25,6 +27,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
         alias={profile?.alias ?? null}
         publicRef={profile?.public_ref ?? null}
         plan={profile?.plan ?? "free"}
+        isWali={(waliCount ?? 0) > 0}
       />
       <main className="flex-1 px-5 py-8 sm:px-8 lg:px-12">
         <div className="mx-auto w-full max-w-4xl">{children}</div>
