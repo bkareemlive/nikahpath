@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "./Button";
-import { plans } from "@/data/pricing";
+import { plans, promo } from "@/data/pricing";
 import { site } from "@/data/site";
 
 const check = (
@@ -14,18 +14,40 @@ const check = (
 export function PricingPlans() {
   const [cycle, setCycle] = useState<"monthly" | "sixMonth">("monthly");
 
-  const fullAccessPrice =
+  const regularFullAccess =
     cycle === "monthly"
       ? plans.fullAccessMonthly
       : plans.fullAccessSixMonth / 6;
 
+  const fullAccessPrice = promo.active
+    ? cycle === "monthly"
+      ? promo.fullAccessMonthly
+      : promo.fullAccessSixMonth / 6
+    : regularFullAccess;
+
+  const sixMonthTotal = promo.active
+    ? promo.fullAccessSixMonth
+    : plans.fullAccessSixMonth;
+
   const fullAccessSub =
     cycle === "monthly"
       ? "Billed each month. Stop whenever you like."
-      : `$${plans.fullAccessSixMonth.toFixed(2)} charged once, covering 6 months.`;
+      : `$${sixMonthTotal.toFixed(2)} charged once, covering 6 months.`;
+
+  const lifetimePrice = promo.active ? promo.lifetime : plans.lifetime;
 
   return (
     <div>
+      {promo.active && (
+        <div className="mx-auto mb-8 flex max-w-2xl items-center justify-center gap-2 rounded-xl border border-primary/30 bg-primary-tint px-4 py-3 text-center text-sm font-medium text-primary-dark">
+          <span aria-hidden>🎉</span>
+          <span>
+            {promo.name}: Full Access ${promo.fullAccessMonthly}/mo and Lifetime
+            ${promo.lifetime} one-time — for the {promo.durationLabel}.
+          </span>
+        </div>
+      )}
+
       <div className="mx-auto mb-10 flex w-fit items-center gap-1 rounded-full border border-line bg-white p-1">
         <button
           type="button"
@@ -44,9 +66,11 @@ export function PricingPlans() {
           }`}
         >
           6 Months
-          <span className="ml-1.5 rounded-full bg-gold-light px-1.5 py-0.5 text-[11px] font-semibold text-gold">
-            Save $50
-          </span>
+          {!promo.active && (
+            <span className="ml-1.5 rounded-full bg-gold-light px-1.5 py-0.5 text-[11px] font-semibold text-gold">
+              Save $50
+            </span>
+          )}
         </button>
       </div>
 
@@ -86,12 +110,22 @@ export function PricingPlans() {
           </span>
           <h3 className="font-display text-xl font-semibold text-ink">Full Access</h3>
           <p className="mt-1 text-sm text-muted">Everything needed to match and talk.</p>
-          <p className="mt-6">
+          <p className="mt-6 flex flex-wrap items-baseline gap-x-2">
             <span className="font-display text-4xl font-semibold text-ink">
               ${fullAccessPrice.toFixed(2)}
             </span>
+            {promo.active && (
+              <span className="font-display text-xl font-semibold text-muted line-through">
+                ${regularFullAccess.toFixed(2)}
+              </span>
+            )}
             <span className="text-sm text-muted"> / month</span>
           </p>
+          {promo.active && (
+            <p className="mt-1 text-xs font-semibold text-primary">
+              {promo.name} · {promo.durationLabel}
+            </p>
+          )}
           <p className="mt-1 text-xs text-muted">{fullAccessSub}</p>
           <ul className="mt-6 space-y-3 text-sm text-body">
             {[
@@ -123,12 +157,22 @@ export function PricingPlans() {
           </span>
           <h3 className="font-display text-xl font-semibold text-ink">Lifetime</h3>
           <p className="mt-1 text-sm text-muted">Pay once. Keep it for good.</p>
-          <p className="mt-6">
+          <p className="mt-6 flex flex-wrap items-baseline gap-x-2">
             <span className="font-display text-4xl font-semibold text-ink">
-              ${plans.lifetime.toFixed(2)}
+              ${lifetimePrice.toFixed(2)}
             </span>
+            {promo.active && (
+              <span className="font-display text-xl font-semibold text-muted line-through">
+                ${plans.lifetime.toFixed(2)}
+              </span>
+            )}
             <span className="text-sm text-muted"> one-time</span>
           </p>
+          {promo.active && (
+            <p className="mt-1 text-xs font-semibold text-primary">
+              {promo.name} · {promo.durationLabel}
+            </p>
+          )}
           <p className="mt-1 text-xs text-muted">No renewals and no monthly charge.</p>
           <ul className="mt-6 space-y-3 text-sm text-body">
             {[

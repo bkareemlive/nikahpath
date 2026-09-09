@@ -4,6 +4,16 @@ export const plans = {
   lifetime: 229.99,
 };
 
+// Limited-time launch promotion. Set active: false to end it.
+export const promo = {
+  active: true,
+  name: "Launch promo",
+  durationLabel: "first 30 days",
+  fullAccessMonthly: 15, // per month during the promo
+  fullAccessSixMonth: 90, // total for 6 months during the promo ($15/mo)
+  lifetime: 150, // one-time during the promo
+};
+
 export const planFeatures = [
   {
     group: "Core",
@@ -45,6 +55,10 @@ export const planFeatures = [
 ];
 
 export const pricingFaq = [
+  {
+    q: "How long does the launch promo last?",
+    a: "The launch promo runs for the first 30 days. During that window Full Access is $15 a month and Lifetime is a one-time $150. A Lifetime plan bought at the promo price stays at that price for good.",
+  },
   {
     q: "How is Full Access different from Lifetime?",
     a: "Full Access is a subscription that opens up every feature you need to match and talk, with 10 interest requests a month. Lifetime is a single payment for permanent access with no recurring fee and no monthly cap on requests, matches or profile views.",
