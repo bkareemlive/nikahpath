@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import type { ProfileRow } from "@/lib/supabase/types";
+import type { ProfileRow, IndependentWaliRow } from "@/lib/supabase/types";
+import { OnboardingWizard } from "@/components/onboarding/Wizard";
 
 export const metadata: Metadata = { title: "Set up your profile" };
 
@@ -22,20 +23,29 @@ export default async function OnboardingPage() {
     redirect("/dashboard");
   }
 
+  const { data: walis } = await supabase
+    .from("independent_walis")
+    .select("id, name, role, location, availability")
+    .eq("active", true)
+    .order("name")
+    .returns<
+      Pick<IndependentWaliRow, "id" | "name" | "role" | "location" | "availability">[]
+    >();
+
   return (
-    <div className="rounded-2xl border border-line bg-white p-8 shadow-card">
-      <h1 className="font-display text-2xl font-semibold text-ink">
-        Let&apos;s set up your profile
+    <div className="mx-auto max-w-xl">
+      <h1 className="font-display text-3xl font-semibold text-ink">
+        Set up your profile
       </h1>
       <p className="mt-2 text-sm leading-relaxed text-muted">
-        Next you&apos;ll answer a short set of questions about your practice, your
-        family situation, and what you are looking for in a spouse — the guided
-        profile form. It is what other members read before deciding to reach out.
+        A short set of questions about your practice, your family situation, and
+        what you are looking for. It is what other members read before deciding to
+        reach out. You can edit any of it later.
       </p>
-      <p className="mt-4 rounded-md bg-cream px-3 py-2 text-xs text-muted">
-        The onboarding wizard is being built. Your account is ready and signed
-        in.
-      </p>
+
+      <div className="mt-8">
+        <OnboardingWizard walis={walis ?? []} />
+      </div>
     </div>
   );
 }
