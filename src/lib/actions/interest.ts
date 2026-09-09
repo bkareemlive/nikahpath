@@ -5,6 +5,7 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 
 export type InterestState = { error?: string; ok?: boolean };
+export type RespondState = { error?: string; ok?: boolean; matched?: boolean };
 
 const MONTHLY_LIMIT = 10;
 
@@ -63,5 +64,70 @@ export async function sendInterest(
   }
 
   revalidatePath(`/browse/${recipient.data}`);
+  return { ok: true };
+}
+
+const idSchema = z.string().uuid();
+
+/** Recipient accepts or declines an incoming interest request. */
+export async function respondToRequest(
+  _prev: RespondState,
+  formData: FormData,
+): Promise<RespondState> {
+  const requestId = idSchema.safeParse(formData.get("request_id"));
+  const decision = formData.get("decision");
+  if (!requestId.success || (decision !== "accept" && decision !== "decline")) {
+    return { error: "Something went wrong. Try again." };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Please sign in again." };
+
+  if (decision === "accept") {
+    const { error } = await supabase.rpc("accept_interest_request", {
+      request_id: requestId.data,
+    });
+    if (error) return { error: error.message };
+    revalidatePath("/requests");
+    revalidatePath("/matches");
+    return { ok: true, matched: true };
+  }
+
+  const { error } = await supabase
+    .from("interest_requests")
+    .update({ status: "declined", responded_at: new Date().toISOString() })
+    .eq("id", requestId.data)
+    .eq("recipient_id", user.id)
+    .eq("status", "pending");
+  if (error) return { error: error.message };
+  revalidatePath("/requests");
+  return { ok: true };
+}
+
+/** Sender withdraws a pending request they made. */
+export async function withdrawRequest(
+  _prev: RespondState,
+  formData: FormData,
+): Promise<RespondState> {
+  const requestId = idSchema.safeParse(formData.get("request_id"));
+  if (!requestId.success) return { error: "Something went wrong. Try again." };
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Please sign in again." };
+
+  const { error } = await supabase
+    .from("interest_requests")
+    .update({ status: "withdrawn", responded_at: new Date().toISOString() })
+    .eq("id", requestId.data)
+    .eq("sender_id", user.id)
+    .eq("status", "pending");
+  if (error) return { error: error.message };
+  revalidatePath("/requests");
   return { ok: true };
 }
