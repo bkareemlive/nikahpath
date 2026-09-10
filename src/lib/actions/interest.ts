@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { limitsFor } from "@/lib/plan";
+import { isBlockedBetween } from "@/lib/moderation";
 
 export type InterestState = { error?: string; ok?: boolean };
 export type RespondState = { error?: string; ok?: boolean; matched?: boolean };
@@ -27,6 +28,9 @@ export async function sendInterest(
   } = await supabase.auth.getUser();
   if (!user) return { error: "Please sign in again." };
   if (user.id === recipient.data) return { error: "That is your own profile." };
+  if (await isBlockedBetween(supabase, user.id, recipient.data)) {
+    return { error: "You cannot contact this member." };
+  }
 
   const { data: me } = await supabase
     .from("profiles")
@@ -88,6 +92,15 @@ export async function respondToRequest(
   if (!user) return { error: "Please sign in again." };
 
   if (decision === "accept") {
+    const { data: req } = await supabase
+      .from("interest_requests")
+      .select("sender_id")
+      .eq("id", requestId.data)
+      .maybeSingle<{ sender_id: string }>();
+    if (req && (await isBlockedBetween(supabase, user.id, req.sender_id))) {
+      return { error: "You cannot accept this — one of you has blocked the other." };
+    }
+
     const { error } = await supabase.rpc("accept_interest_request", {
       request_id: requestId.data,
     });

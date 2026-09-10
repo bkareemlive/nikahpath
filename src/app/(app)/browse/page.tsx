@@ -3,6 +3,7 @@ import Link from "next/link";
 import { requireActiveProfile } from "@/lib/supabase/queries";
 import type { ProfileRow } from "@/lib/supabase/types";
 import { dobRangeForAges } from "@/lib/profile-display";
+import { blockedIdSet } from "@/lib/moderation";
 import { MemberCard } from "@/components/app/MemberCard";
 import { BrowseFilters, type BrowseParams } from "@/components/app/BrowseFilters";
 
@@ -28,6 +29,9 @@ export default async function BrowsePage({
   const isPaid = profile.plan !== "free";
   const opposite = profile.gender === "sister" ? "brother" : "sister";
 
+  // Hide anyone either party has blocked, in both directions.
+  const blocked = await blockedIdSet(supabase, user.id);
+
   const ageMin = clampInt(sp.age_min, 18, 99);
   const ageMax = clampInt(sp.age_max, 18, 99);
   const { minDob, maxDob } = dobRangeForAges(ageMin, ageMax);
@@ -40,6 +44,8 @@ export default async function BrowsePage({
     .eq("status", "active")
     .eq("gender", opposite)
     .neq("id", user.id);
+
+  if (blocked.size > 0) q = q.not("id", "in", `(${[...blocked].join(",")})`);
 
   if (sp.country) q = q.eq("location_country", sp.country);
   if (sp.category === "standard" || sp.category === "widowed")

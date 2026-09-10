@@ -3,6 +3,7 @@ import Link from "next/link";
 import { requireActiveProfile } from "@/lib/supabase/queries";
 import { ageFromDob } from "@/lib/profile-display";
 import { limitsFor } from "@/lib/plan";
+import { blockedIdSet } from "@/lib/moderation";
 import { ReceivedActions, WithdrawAction } from "@/components/app/RequestActions";
 import { NudgeButton } from "@/components/app/NudgeButton";
 
@@ -81,8 +82,13 @@ export default async function RequestsPage() {
       : Promise.resolve({ data: [] as WaliReq[] }),
   ]);
 
-  const received = recvRaw ?? [];
-  const sent = sentRaw ?? [];
+  const blocked = await blockedIdSet(supabase, user.id);
+  const notBlocked = (r: ReqRow) => {
+    const p = one(r.other);
+    return !p || !blocked.has(p.id);
+  };
+  const received = (recvRaw ?? []).filter(notBlocked);
+  const sent = (sentRaw ?? []).filter(notBlocked);
   const waliReqs = waliRaw ?? [];
 
   const receivedPending = received.filter((r) => r.status === "pending");

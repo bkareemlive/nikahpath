@@ -7,6 +7,13 @@ import {
   PasswordForm,
   CloseAccountForm,
 } from "@/components/account/AccountForms";
+import { ReportBlockMenu } from "@/components/app/ReportBlockMenu";
+
+type BlockedProfile = {
+  id: string;
+  alias: string | null;
+  public_ref: string | null;
+};
 
 export const metadata: Metadata = { title: "Account" };
 
@@ -16,6 +23,27 @@ export default async function AccountPage() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
+
+  const { data: blockRows } = await supabase
+    .from("blocks")
+    .select("blocked_id, created_at")
+    .eq("blocker_id", user.id)
+    .order("created_at", { ascending: false })
+    .returns<{ blocked_id: string; created_at: string }[]>();
+
+  const blockedIds = (blockRows ?? []).map((b) => b.blocked_id);
+  let blockedProfiles: BlockedProfile[] = [];
+  if (blockedIds.length > 0) {
+    const { data } = await supabase
+      .from("profiles")
+      .select("id, alias, public_ref")
+      .in("id", blockedIds)
+      .returns<BlockedProfile[]>();
+    const byId = new Map((data ?? []).map((p) => [p.id, p]));
+    blockedProfiles = blockedIds
+      .map((id) => byId.get(id))
+      .filter((p): p is BlockedProfile => Boolean(p));
+  }
 
   return (
     <div>
@@ -31,6 +59,36 @@ export default async function AccountPage() {
       <div className="mt-8 grid max-w-xl gap-6">
         <EmailForm current={user.email ?? ""} />
         <PasswordForm />
+
+        <section className="rounded-xl border border-line bg-white p-5">
+          <h2 className="font-display text-lg font-semibold text-ink">
+            Blocked members
+          </h2>
+          <p className="mt-1 text-sm text-muted">
+            You won&apos;t see each other anywhere on NikahPath, and neither of
+            you can send contact.
+          </p>
+          {blockedProfiles.length === 0 ? (
+            <p className="mt-4 text-sm text-muted">
+              You haven&apos;t blocked anyone.
+            </p>
+          ) : (
+            <ul className="mt-4 divide-y divide-line">
+              {blockedProfiles.map((p) => (
+                <li
+                  key={p.id}
+                  className="flex items-center justify-between gap-4 py-3"
+                >
+                  <span className="text-sm text-ink">
+                    {p.alias ? `${p.alias} · ${p.public_ref}` : p.public_ref}
+                  </span>
+                  <ReportBlockMenu targetId={p.id} blocked />
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
         <CloseAccountForm />
       </div>
     </div>

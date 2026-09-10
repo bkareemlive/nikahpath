@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { requireActiveProfile } from "@/lib/supabase/queries";
 import { ageFromDob } from "@/lib/profile-display";
+import { blockedIdSet } from "@/lib/moderation";
 import type { MessageRow } from "@/lib/supabase/types";
 
 export const metadata: Metadata = { title: "Matches" };
@@ -49,7 +50,11 @@ export default async function MatchesPage() {
     .order("created_at", { ascending: false })
     .returns<MatchRowJoined[]>();
 
-  const matches = rows ?? [];
+  const blocked = await blockedIdSet(supabase, user.id);
+  const matches = (rows ?? []).filter((m) => {
+    const otherId = m.a_id === user.id ? m.b_id : m.a_id;
+    return !blocked.has(otherId);
+  });
 
   const lastByMatch = new Map<string, MessageRow>();
   if (matches.length) {

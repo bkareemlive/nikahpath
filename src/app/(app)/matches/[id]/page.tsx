@@ -8,6 +8,7 @@ import { isoDaysAgo } from "@/lib/time";
 import type { MessageRow, ProfileRow } from "@/lib/supabase/types";
 import { ChatThread } from "@/components/app/ChatThread";
 import { NudgeButton } from "@/components/app/NudgeButton";
+import { ReportBlockMenu } from "@/components/app/ReportBlockMenu";
 
 export const metadata: Metadata = { title: "Conversation" };
 
@@ -65,6 +66,16 @@ export default async function ConversationPage({
 
   if (!other) notFound();
 
+  const { data: blockRows } = await supabase
+    .from("blocks")
+    .select("blocker_id, blocked_id")
+    .or(
+      `and(blocker_id.eq.${user.id},blocked_id.eq.${otherId}),and(blocker_id.eq.${otherId},blocked_id.eq.${user.id})`,
+    )
+    .returns<{ blocker_id: string; blocked_id: string }[]>();
+  const iBlockedThem = (blockRows ?? []).some((b) => b.blocker_id === user.id);
+  const blockedEitherWay = (blockRows ?? []).length > 0;
+
   const { count: nudgedYou } = await supabase
     .from("nudges")
     .select("id", { count: "exact", head: true })
@@ -88,7 +99,7 @@ export default async function ConversationPage({
           {other.alias ? `${other.alias} · ${other.public_ref}` : other.public_ref}
         </h1>
         <div className="flex items-center gap-3">
-          {canNudge && (
+          {canNudge && !blockedEitherWay && (
             <NudgeButton
               recipientId={other.id}
               redirectPath={`/matches/${id}`}
@@ -97,6 +108,7 @@ export default async function ConversationPage({
           <Link href={`/browse/${other.id}`} className="text-sm font-medium text-primary hover:underline">
             View full profile →
           </Link>
+          <ReportBlockMenu targetId={other.id} blocked={iBlockedThem} />
         </div>
       </div>
       <p className="mt-0.5 text-sm text-muted">
@@ -121,9 +133,17 @@ export default async function ConversationPage({
         </div>
       )}
 
-      <div className="mt-5">
-        <ChatThread matchId={id} meId={user.id} initial={initial ?? []} />
-      </div>
+      {blockedEitherWay ? (
+        <div className="mt-5 rounded-xl border border-line bg-white p-6 text-center text-sm text-muted">
+          {iBlockedThem
+            ? "You have blocked this member. Unblock to reopen the conversation."
+            : "This conversation is closed."}
+        </div>
+      ) : (
+        <div className="mt-5">
+          <ChatThread matchId={id} meId={user.id} initial={initial ?? []} />
+        </div>
+      )}
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { isBlockedBetween } from "@/lib/moderation";
 import type { MessageRow } from "@/lib/supabase/types";
 
 export type SendState = { error?: string; message?: MessageRow };
@@ -28,6 +29,18 @@ export async function sendMessage(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return { error: "Please sign in again." };
+
+  const { data: match } = await supabase
+    .from("matches")
+    .select("a_id, b_id")
+    .eq("id", parsed.data.match_id)
+    .maybeSingle<{ a_id: string; b_id: string }>();
+  if (match) {
+    const otherId = match.a_id === user.id ? match.b_id : match.a_id;
+    if (await isBlockedBetween(supabase, user.id, otherId)) {
+      return { error: "This conversation is closed." };
+    }
+  }
 
   const { data, error } = await supabase
     .from("messages")

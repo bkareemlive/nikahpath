@@ -15,6 +15,7 @@ import {
 } from "@/lib/profile-display";
 import { RecordView } from "@/components/app/RecordView";
 import { InterestButton, type Relation } from "@/components/app/InterestButton";
+import { ReportBlockMenu } from "@/components/app/ReportBlockMenu";
 
 export const metadata: Metadata = { title: "Member" };
 
@@ -28,6 +29,29 @@ export default async function MemberDetailPage({
 
   if (id === user.id) redirect("/profile");
 
+  const { data: blockRows } = await supabase
+    .from("blocks")
+    .select("blocker_id, blocked_id")
+    .or(
+      `and(blocker_id.eq.${user.id},blocked_id.eq.${id}),and(blocker_id.eq.${id},blocked_id.eq.${user.id})`,
+    )
+    .returns<{ blocker_id: string; blocked_id: string }[]>();
+  const iBlockedThem = (blockRows ?? []).some((b) => b.blocker_id === user.id);
+  const theyBlockedMe = (blockRows ?? []).some((b) => b.blocker_id === id);
+
+  if (theyBlockedMe && !iBlockedThem) {
+    return (
+      <div>
+        <Link href="/browse" className="text-sm font-medium text-primary hover:underline">
+          ← Back to browse
+        </Link>
+        <p className="mt-6 rounded-xl border border-line bg-white p-8 text-center text-sm text-muted">
+          This profile is not available.
+        </p>
+      </div>
+    );
+  }
+
   const { data: target } = await supabase
     .from("profiles")
     .select("*")
@@ -36,6 +60,28 @@ export default async function MemberDetailPage({
     .maybeSingle<ProfileRow>();
 
   if (!target) notFound();
+
+  if (iBlockedThem) {
+    return (
+      <div>
+        <Link href="/browse" className="text-sm font-medium text-primary hover:underline">
+          ← Back to browse
+        </Link>
+        <div className="mt-6 rounded-xl border border-line bg-white p-8 text-center">
+          <p className="text-sm text-muted">
+            You have blocked{" "}
+            <span className="font-medium text-ink">
+              {target.alias ?? target.public_ref}
+            </span>
+            . Unblock to see their profile and interact.
+          </p>
+          <div className="mt-4 flex justify-center">
+            <ReportBlockMenu targetId={id} blocked />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const [{ data: requests }, { data: matches }] = await Promise.all([
     supabase
@@ -93,9 +139,12 @@ export default async function MemberDetailPage({
     <div>
       <RecordView viewedId={id} />
 
-      <Link href="/browse" className="text-sm font-medium text-primary hover:underline">
-        ← Back to browse
-      </Link>
+      <div className="flex items-center justify-between">
+        <Link href="/browse" className="text-sm font-medium text-primary hover:underline">
+          ← Back to browse
+        </Link>
+        <ReportBlockMenu targetId={id} blocked={false} />
+      </div>
 
       <div className="mt-4 rounded-2xl border border-line bg-white p-6 shadow-card sm:p-8">
         <h1 className="font-display text-3xl font-semibold text-ink">

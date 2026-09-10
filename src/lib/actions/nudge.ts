@@ -5,6 +5,7 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { limitsFor, NUDGE_COOLDOWN_HOURS } from "@/lib/plan";
 import { isoHoursAgo } from "@/lib/time";
+import { isBlockedBetween } from "@/lib/moderation";
 
 export type NudgeState = { error?: string; ok?: boolean };
 
@@ -30,6 +31,9 @@ export async function sendNudge(
   } = await supabase.auth.getUser();
   if (!user) return { error: "Please sign in again." };
   if (user.id === recipientId) return { error: "That is your own profile." };
+  if (await isBlockedBetween(supabase, user.id, recipientId)) {
+    return { error: "You cannot contact this member." };
+  }
 
   const { data: me } = await supabase
     .from("profiles")
