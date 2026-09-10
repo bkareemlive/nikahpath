@@ -64,7 +64,26 @@ export function AppSidebar({
         <p className="mt-1 inline-block rounded-full bg-cream-deep px-2 py-0.5 text-xs text-body">
           {planLabel}
         </p>
-        <form action={signOut} className="mt-4">
+        <div className="mt-4 flex gap-4">
+          <Link href="/account" className="text-xs font-medium text-muted hover:text-primary">
+            Account
+          </Link>
+          <form action={signOut}>
+            <button
+              type="submit"
+              className="text-xs font-medium text-muted hover:text-primary"
+            >
+              Sign out
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div className="mt-4 flex gap-4 lg:hidden">
+        <Link href="/account" className="text-xs font-medium text-muted hover:text-primary">
+          Account
+        </Link>
+        <form action={signOut}>
           <button
             type="submit"
             className="text-xs font-medium text-muted hover:text-primary"
@@ -73,15 +92,6 @@ export function AppSidebar({
           </button>
         </form>
       </div>
-
-      <form action={signOut} className="mt-4 lg:hidden">
-        <button
-          type="submit"
-          className="text-xs font-medium text-muted hover:text-primary"
-        >
-          Sign out
-        </button>
-      </form>
     </aside>
   );
 }
