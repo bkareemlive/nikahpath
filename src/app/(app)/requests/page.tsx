@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { requireActiveProfile } from "@/lib/supabase/queries";
 import { ageFromDob } from "@/lib/profile-display";
+import { limitsFor } from "@/lib/plan";
 import { ReceivedActions, WithdrawAction } from "@/components/app/RequestActions";
+import { NudgeButton } from "@/components/app/NudgeButton";
 
 export const metadata: Metadata = { title: "Requests" };
 
@@ -86,6 +88,7 @@ export default async function RequestsPage() {
   const receivedPending = received.filter((r) => r.status === "pending");
   const receivedResolved = received.filter((r) => r.status === "accepted");
   const sentVisible = sent.filter((r) => r.status !== "withdrawn");
+  const canNudge = limitsFor(profile.plan).sendNudges;
 
   const statusBadge: Record<string, string> = {
     pending: "bg-cream-deep text-body",
@@ -189,6 +192,9 @@ export default async function RequestsPage() {
                     >
                       {r.status}
                     </span>
+                    {r.status === "pending" && canNudge && (
+                      <NudgeButton recipientId={p.id} redirectPath="/requests" />
+                    )}
                     {r.status === "pending" && <WithdrawAction requestId={r.id} />}
                     {r.status === "accepted" && (
                       <Link href="/matches" className="text-xs font-medium text-primary hover:underline">

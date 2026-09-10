@@ -6,6 +6,7 @@ export type PlanLimits = {
   advancedFilters: boolean;
   recentActivitySort: boolean;
   seeWhoViewedYou: boolean;
+  sendNudges: boolean;
   visibilityBoost: boolean;
   adFree: boolean;
 };
@@ -17,6 +18,7 @@ export const PLAN_LIMITS: Record<Plan, PlanLimits> = {
     advancedFilters: false,
     recentActivitySort: false,
     seeWhoViewedYou: false,
+    sendNudges: false,
     visibilityBoost: false,
     adFree: false,
   },
@@ -26,6 +28,7 @@ export const PLAN_LIMITS: Record<Plan, PlanLimits> = {
     advancedFilters: true,
     recentActivitySort: true,
     seeWhoViewedYou: true,
+    sendNudges: true,
     visibilityBoost: false,
     adFree: true,
   },
@@ -35,10 +38,14 @@ export const PLAN_LIMITS: Record<Plan, PlanLimits> = {
     advancedFilters: true,
     recentActivitySort: true,
     seeWhoViewedYou: true,
+    sendNudges: true,
     visibilityBoost: true,
     adFree: true,
   },
 };
+
+// Minimum gap between nudges to the same person.
+export const NUDGE_COOLDOWN_HOURS = 24;
 
 export function limitsFor(plan: string | null | undefined): PlanLimits {
   return PLAN_LIMITS[(plan as Plan) ?? "free"] ?? PLAN_LIMITS.free;

@@ -3,8 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireActiveProfile } from "@/lib/supabase/queries";
 import { ageFromDob } from "@/lib/profile-display";
+import { limitsFor, NUDGE_COOLDOWN_HOURS } from "@/lib/plan";
+import { isoDaysAgo } from "@/lib/time";
 import type { MessageRow, ProfileRow } from "@/lib/supabase/types";
 import { ChatThread } from "@/components/app/ChatThread";
+import { NudgeButton } from "@/components/app/NudgeButton";
 
 export const metadata: Metadata = { title: "Conversation" };
 
@@ -16,7 +19,7 @@ export default async function ConversationPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const { supabase, user } = await requireActiveProfile();
+  const { supabase, user, profile } = await requireActiveProfile();
 
   const { data: match } = await supabase
     .from("matches")
@@ -62,6 +65,14 @@ export default async function ConversationPage({
 
   if (!other) notFound();
 
+  const { count: nudgedYou } = await supabase
+    .from("nudges")
+    .select("id", { count: "exact", head: true })
+    .eq("sender_id", otherId)
+    .eq("recipient_id", user.id)
+    .gte("created_at", isoDaysAgo(7));
+
+  const canNudge = limitsFor(profile.plan).sendNudges;
   const age = ageFromDob(other.date_of_birth);
   const showWali =
     other.gender === "sister" && other.wali_type === "family" && (other.wali_name || other.wali_contact);
@@ -76,15 +87,30 @@ export default async function ConversationPage({
         <h1 className="font-display text-2xl font-semibold text-ink">
           {other.alias ? `${other.alias} · ${other.public_ref}` : other.public_ref}
         </h1>
-        <Link href={`/browse/${other.id}`} className="text-sm font-medium text-primary hover:underline">
-          View full profile →
-        </Link>
+        <div className="flex items-center gap-3">
+          {canNudge && (
+            <NudgeButton
+              recipientId={other.id}
+              redirectPath={`/matches/${id}`}
+            />
+          )}
+          <Link href={`/browse/${other.id}`} className="text-sm font-medium text-primary hover:underline">
+            View full profile →
+          </Link>
+        </div>
       </div>
       <p className="mt-0.5 text-sm text-muted">
         {[age, [other.location_city, other.location_country].filter(Boolean).join(", ")]
           .filter(Boolean)
           .join(" · ")}
       </p>
+
+      {(nudgedYou ?? 0) > 0 && (
+        <p className="mt-3 rounded-lg border border-primary/25 bg-primary-light px-4 py-2.5 text-sm text-primary-dark">
+          👋 They nudged you — a gentle reminder they&apos;re still keen. (Nudges
+          can be sent once every {NUDGE_COOLDOWN_HOURS}h.)
+        </p>
+      )}
 
       {showWali && (
         <div className="mt-3 rounded-lg border border-line bg-cream px-4 py-3 text-sm">

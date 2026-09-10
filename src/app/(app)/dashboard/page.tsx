@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { ProfileRow } from "@/lib/supabase/types";
+import { isoDaysAgo } from "@/lib/time";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
@@ -58,17 +59,24 @@ export default async function DashboardPage({
     redirect("/onboarding");
   }
 
-  const [{ count: incoming }, { count: matchCount }] = await Promise.all([
-    supabase
-      .from("interest_requests")
-      .select("id", { count: "exact", head: true })
-      .eq("recipient_id", user.id)
-      .eq("status", "pending"),
-    supabase
-      .from("matches")
-      .select("id", { count: "exact", head: true })
-      .or(`a_id.eq.${user.id},b_id.eq.${user.id}`),
-  ]);
+  const nudgeSince = isoDaysAgo(7);
+  const [{ count: incoming }, { count: matchCount }, { count: nudgeCount }] =
+    await Promise.all([
+      supabase
+        .from("interest_requests")
+        .select("id", { count: "exact", head: true })
+        .eq("recipient_id", user.id)
+        .eq("status", "pending"),
+      supabase
+        .from("matches")
+        .select("id", { count: "exact", head: true })
+        .or(`a_id.eq.${user.id},b_id.eq.${user.id}`),
+      supabase
+        .from("nudges")
+        .select("id", { count: "exact", head: true })
+        .eq("recipient_id", user.id)
+        .gte("created_at", nudgeSince),
+    ]);
 
   const cards = [
     {
@@ -97,6 +105,16 @@ export default async function DashboardPage({
         <p className="mb-6 rounded-xl border border-primary/25 bg-primary-light px-4 py-3 text-sm text-primary-dark">
           Thank you. Your payment went through — your plan will activate within a
           moment.
+        </p>
+      )}
+      {(nudgeCount ?? 0) > 0 && (
+        <p className="mb-6 rounded-xl border border-primary/25 bg-primary-light px-4 py-3 text-sm text-primary-dark">
+          👋 {nudgeCount} {nudgeCount === 1 ? "person" : "people"} nudged you in
+          the last week —{" "}
+          <Link href="/matches" className="font-medium underline">
+            check your matches
+          </Link>
+          .
         </p>
       )}
       <h1 className="font-display text-3xl font-semibold text-ink">
