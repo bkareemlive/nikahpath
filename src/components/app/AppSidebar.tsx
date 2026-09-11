@@ -20,12 +20,14 @@ export function AppSidebar({
   publicRef,
   plan,
   isWali = false,
+  isAdmin = false,
 }: {
   email: string;
   alias: string | null;
   publicRef: string | null;
   plan: string;
   isWali?: boolean;
+  isAdmin?: boolean;
 }) {
   const pathname = usePathname();
   const links = isWali
@@ -57,6 +59,17 @@ export function AppSidebar({
           );
         })}
       </nav>
+
+      {isAdmin && (
+        <Link
+          href="/admin"
+          className={`mt-4 flex shrink-0 items-center gap-2 rounded-md border border-gold/40 bg-gold-light px-3 py-2 text-sm font-medium text-ink hover:border-gold lg:mt-6 ${
+            pathname.startsWith("/admin") ? "border-gold" : ""
+          }`}
+        >
+          Admin dashboard
+        </Link>
+      )}
 
       <div className="mt-6 hidden border-t border-line pt-5 text-sm lg:block">
         <p className="font-medium text-ink">{alias ?? publicRef ?? "Your account"}</p>

@@ -5,7 +5,7 @@
  */
 
 export type Gender = "sister" | "brother";
-export type ProfileStatus = "draft" | "active" | "paused" | "hidden";
+export type ProfileStatus = "draft" | "active" | "paused" | "hidden" | "suspended";
 export type Plan = "free" | "full_access" | "lifetime";
 export type Category = "standard" | "widowed";
 export type MaritalStatus = "never_married" | "divorced" | "widowed";

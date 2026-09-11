@@ -1,5 +1,12 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
+export const REPORT_STATUSES = [
+  { value: "open", label: "Open" },
+  { value: "reviewing", label: "Reviewing" },
+  { value: "actioned", label: "Actioned" },
+  { value: "dismissed", label: "Dismissed" },
+] as const;
+
 export const REPORT_REASONS = [
   { value: "inappropriate", label: "Inappropriate content or photos" },
   { value: "fake", label: "Fake or misrepresented profile" },

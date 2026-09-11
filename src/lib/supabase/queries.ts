@@ -25,6 +25,7 @@ export async function getSessionAndProfile() {
 export async function requireActiveProfile() {
   const ctx = await getSessionAndProfile();
   if (!ctx.profile || ctx.profile.status === "draft") redirect("/onboarding");
+  if (ctx.profile.status === "suspended") redirect("/suspended");
   return ctx as {
     supabase: Awaited<ReturnType<typeof createClient>>;
     user: NonNullable<Awaited<ReturnType<typeof getSessionAndProfile>>["user"]>;

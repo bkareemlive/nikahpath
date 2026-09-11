@@ -41,7 +41,8 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith("/requests") ||
     pathname.startsWith("/matches") ||
     pathname.startsWith("/profile") ||
-    pathname.startsWith("/onboarding");
+    pathname.startsWith("/onboarding") ||
+    pathname.startsWith("/admin");
   const isAuthPage =
     pathname === "/login" ||
     pathname === "/register" ||
