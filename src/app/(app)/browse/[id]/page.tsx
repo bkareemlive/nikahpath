@@ -16,6 +16,7 @@ import {
 import { RecordView } from "@/components/app/RecordView";
 import { InterestButton, type Relation } from "@/components/app/InterestButton";
 import { ReportBlockMenu } from "@/components/app/ReportBlockMenu";
+import { SaveToggle } from "@/components/app/SaveToggle";
 
 export const metadata: Metadata = { title: "Member" };
 
@@ -83,7 +84,7 @@ export default async function MemberDetailPage({
     );
   }
 
-  const [{ data: requests }, { data: matches }] = await Promise.all([
+  const [{ data: requests }, { data: matches }, { data: savedRow }] = await Promise.all([
     supabase
       .from("interest_requests")
       .select("sender_id, recipient_id, status")
@@ -96,7 +97,14 @@ export default async function MemberDetailPage({
       .select("a_id, b_id")
       .or(`and(a_id.eq.${user.id},b_id.eq.${id}),and(a_id.eq.${id},b_id.eq.${user.id})`)
       .returns<Pick<MatchRow, "a_id" | "b_id">[]>(),
+    supabase
+      .from("saved_profiles")
+      .select("saved_id")
+      .eq("user_id", user.id)
+      .eq("saved_id", id)
+      .maybeSingle<{ saved_id: string }>(),
   ]);
+  const isSaved = Boolean(savedRow);
 
   let relation: Relation = "none";
   if ((matches?.length ?? 0) > 0) relation = "matched";
@@ -143,7 +151,10 @@ export default async function MemberDetailPage({
         <Link href="/browse" className="text-sm font-medium text-primary hover:underline">
           ← Back to browse
         </Link>
-        <ReportBlockMenu targetId={id} blocked={false} />
+        <div className="flex items-center gap-3">
+          <SaveToggle targetId={id} saved={isSaved} />
+          <ReportBlockMenu targetId={id} blocked={false} />
+        </div>
       </div>
 
       <div className="mt-4 rounded-2xl border border-line bg-white p-6 shadow-card sm:p-8">

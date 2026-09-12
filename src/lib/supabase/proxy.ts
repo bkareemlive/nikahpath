@@ -38,6 +38,7 @@ export async function updateSession(request: NextRequest) {
   const isAuthArea =
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/browse") ||
+    pathname.startsWith("/shortlist") ||
     pathname.startsWith("/requests") ||
     pathname.startsWith("/matches") ||
     pathname.startsWith("/profile") ||
