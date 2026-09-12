@@ -83,8 +83,8 @@ export async function reportMember(
     .safeParse({
       target_id: formData.get("target_id"),
       reason: formData.get("reason"),
-      detail: formData.get("detail"),
-      also_block: formData.get("also_block"),
+      detail: formData.get("detail") ?? undefined,
+      also_block: formData.get("also_block") ?? undefined,
     });
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Choose a reason." };
