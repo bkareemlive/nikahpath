@@ -1,11 +1,35 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { isBlockedBetween } from "@/lib/moderation";
 import type { MessageRow } from "@/lib/supabase/types";
 
 export type SendState = { error?: string; message?: MessageRow };
+
+const uuid = z.string().uuid();
+
+/** Marks every unread message the other side sent in this match as read. */
+export async function markMatchRead(matchId: string): Promise<void> {
+  if (!uuid.safeParse(matchId).success) return;
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return;
+
+  const { error } = await supabase
+    .from("messages")
+    .update({ read_at: new Date().toISOString() })
+    .eq("match_id", matchId)
+    .neq("sender_id", user.id)
+    .is("read_at", null);
+  if (error) return;
+
+  revalidatePath("/matches");
+}
 
 const schema = z.object({
   match_id: z.string().uuid(),

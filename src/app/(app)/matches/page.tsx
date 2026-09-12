@@ -57,10 +57,11 @@ export default async function MatchesPage() {
   });
 
   const lastByMatch = new Map<string, MessageRow>();
+  const unreadByMatch = new Map<string, number>();
   if (matches.length) {
     const { data: msgs } = await supabase
       .from("messages")
-      .select("id, match_id, sender_id, body, created_at")
+      .select("id, match_id, sender_id, body, created_at, read_at")
       .in(
         "match_id",
         matches.map((m) => m.id),
@@ -69,12 +70,23 @@ export default async function MatchesPage() {
       .returns<MessageRow[]>();
     for (const msg of msgs ?? []) {
       if (!lastByMatch.has(msg.match_id)) lastByMatch.set(msg.match_id, msg);
+      if (msg.sender_id !== user.id && !msg.read_at) {
+        unreadByMatch.set(msg.match_id, (unreadByMatch.get(msg.match_id) ?? 0) + 1);
+      }
     }
   }
+  const totalUnread = [...unreadByMatch.values()].reduce((a, b) => a + b, 0);
 
   return (
     <div>
-      <h1 className="font-display text-3xl font-semibold text-ink">Matches</h1>
+      <h1 className="font-display text-3xl font-semibold text-ink">
+        Matches
+        {totalUnread > 0 && (
+          <span className="ml-2 align-middle text-sm font-medium text-primary">
+            · {totalUnread} unread
+          </span>
+        )}
+      </h1>
       <p className="mt-1 text-sm text-muted">
         Both of you expressed interest. Keep the conversation purposeful and
         involve the guardian as it gets serious.
@@ -91,18 +103,25 @@ export default async function MatchesPage() {
             const other = one(m.a_id === user.id ? m.b : m.a);
             if (!other) return null;
             const last = lastByMatch.get(m.id);
+            const unread = unreadByMatch.get(m.id) ?? 0;
             const age = ageFromDob(other.date_of_birth);
             return (
               <li key={m.id}>
                 <Link
                   href={`/matches/${m.id}`}
-                  className="flex items-center justify-between gap-4 rounded-xl border border-line bg-white p-4 shadow-card transition-colors hover:border-primary"
+                  className={`flex items-center justify-between gap-4 rounded-xl border bg-white p-4 shadow-card transition-colors hover:border-primary ${
+                    unread > 0 ? "border-primary/40" : "border-line"
+                  }`}
                 >
                   <div className="min-w-0">
                     <p className="font-display text-lg font-semibold text-ink">
                       {other.alias ? `${other.alias} · ${other.public_ref}` : other.public_ref}
                     </p>
-                    <p className="truncate text-sm text-muted">
+                    <p
+                      className={`truncate text-sm ${
+                        unread > 0 ? "font-medium text-ink" : "text-muted"
+                      }`}
+                    >
                       {last
                         ? `${last.sender_id === user.id ? "You: " : ""}${last.body}`
                         : [
@@ -115,9 +134,16 @@ export default async function MatchesPage() {
                             .join(" · ")}
                     </p>
                   </div>
-                  <span className="shrink-0 text-xs text-muted">
-                    {relTime(last?.created_at ?? m.created_at)}
-                  </span>
+                  <div className="flex shrink-0 flex-col items-end gap-1.5">
+                    <span className="text-xs text-muted">
+                      {relTime(last?.created_at ?? m.created_at)}
+                    </span>
+                    {unread > 0 && (
+                      <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-semibold text-white">
+                        {unread}
+                      </span>
+                    )}
+                  </div>
                 </Link>
               </li>
             );

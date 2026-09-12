@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { sendMessage } from "@/lib/actions/chat";
+import { sendMessage, markMatchRead } from "@/lib/actions/chat";
 import type { MessageRow } from "@/lib/supabase/types";
 
 function timeOf(iso: string) {
@@ -31,13 +31,20 @@ export function ChatThread({
   const [error, setError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  function merge(row: MessageRow) {
-    setMessages((prev) =>
-      prev.some((m) => m.id === row.id)
-        ? prev
-        : [...prev, row].sort((a, b) => a.created_at.localeCompare(b.created_at)),
-    );
+  function upsert(row: MessageRow) {
+    setMessages((prev) => {
+      const next = prev.some((m) => m.id === row.id)
+        ? prev.map((m) => (m.id === row.id ? row : m))
+        : [...prev, row];
+      return next.sort((a, b) => a.created_at.localeCompare(b.created_at));
+    });
   }
+
+  // Mark whatever the other side has sent as read: on open, and again
+  // whenever a fresh message from them lands while the thread is open.
+  useEffect(() => {
+    void markMatchRead(matchId);
+  }, [matchId]);
 
   // Live updates for both participants
   useEffect(() => {
@@ -60,12 +67,27 @@ export function ChatThread({
             table: "messages",
             filter: `match_id=eq.${matchId}`,
           },
-          (payload) => merge(payload.new as MessageRow),
+          (payload) => {
+            const row = payload.new as MessageRow;
+            upsert(row);
+            if (row.sender_id !== meId) void markMatchRead(matchId);
+          },
+        )
+        .on(
+          "postgres_changes",
+          {
+            event: "UPDATE",
+            schema: "public",
+            table: "messages",
+            filter: `match_id=eq.${matchId}`,
+          },
+          (payload) => upsert(payload.new as MessageRow),
         )
         .subscribe();
     })();
 
-    // Safety net: poll for anything the socket missed.
+    // Safety net: poll for anything the socket missed (new messages, or
+    // read receipts on ones we already have).
     const poll = setInterval(async () => {
       const { data } = await supabase
         .from("messages")
@@ -76,11 +98,11 @@ export function ChatThread({
         .returns<MessageRow[]>();
       if (data) {
         setMessages((prev) => {
-          const known = new Set(prev.map((m) => m.id));
-          const extra = data.filter((m) => !known.has(m.id));
-          return extra.length
-            ? [...prev, ...extra].sort((a, b) => a.created_at.localeCompare(b.created_at))
-            : prev;
+          const byId = new Map(prev.map((m) => [m.id, m]));
+          for (const row of data) byId.set(row.id, row);
+          return [...byId.values()].sort((a, b) =>
+            a.created_at.localeCompare(b.created_at),
+          );
         });
       }
     }, 5000);
@@ -90,7 +112,7 @@ export function ChatThread({
       clearInterval(poll);
       if (channel) void supabase.removeChannel(channel);
     };
-  }, [matchId]);
+  }, [matchId, meId]);
 
   // Keep pinned to the bottom
   useEffect(() => {
@@ -108,7 +130,7 @@ export function ChatThread({
       return;
     }
     if (res.message) {
-      merge(res.message);
+      upsert(res.message);
       setDraft("");
     }
   }
@@ -121,30 +143,41 @@ export function ChatThread({
             No messages yet. Say salaam — keep it purposeful and respectful.
           </p>
         )}
-        {messages.map((m, i) => {
-          const mine = m.sender_id === meId;
-          const day = dayOf(m.created_at);
-          const showDay = i === 0 || dayOf(messages[i - 1].created_at) !== day;
-          return (
-            <div key={m.id}>
-              {showDay && <p className="my-3 text-center text-xs text-muted">{day}</p>}
-              <div className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-                <div
-                  className={`max-w-[75%] rounded-2xl px-3.5 py-2 text-sm ${
-                    mine ? "bg-primary text-white" : "border border-line bg-cream text-body"
-                  }`}
-                >
-                  <p className="whitespace-pre-wrap break-words">{m.body}</p>
-                  <p
-                    className={`mt-1 text-[10px] ${mine ? "text-white/70" : "text-muted"}`}
+        {(() => {
+          let lastMineIdx = -1;
+          messages.forEach((m, i) => {
+            if (m.sender_id === meId) lastMineIdx = i;
+          });
+          return messages.map((m, i) => {
+            const mine = m.sender_id === meId;
+            const day = dayOf(m.created_at);
+            const showDay = i === 0 || dayOf(messages[i - 1].created_at) !== day;
+            return (
+              <div key={m.id}>
+                {showDay && <p className="my-3 text-center text-xs text-muted">{day}</p>}
+                <div className={`flex ${mine ? "justify-end" : "justify-start"}`}>
+                  <div
+                    className={`max-w-[75%] rounded-2xl px-3.5 py-2 text-sm ${
+                      mine ? "bg-primary text-white" : "border border-line bg-cream text-body"
+                    }`}
                   >
-                    {timeOf(m.created_at)}
-                  </p>
+                    <p className="whitespace-pre-wrap break-words">{m.body}</p>
+                    <p
+                      className={`mt-1 text-[10px] ${mine ? "text-white/70" : "text-muted"}`}
+                    >
+                      {timeOf(m.created_at)}
+                    </p>
+                  </div>
                 </div>
+                {mine && i === lastMineIdx && (
+                  <p className="mt-0.5 text-right text-[10px] text-muted">
+                    {m.read_at ? "Read" : "Sent"}
+                  </p>
+                )}
               </div>
-            </div>
-          );
-        })}
+            );
+          });
+        })()}
       </div>
 
       <form action={submit} className="border-t border-line p-3">

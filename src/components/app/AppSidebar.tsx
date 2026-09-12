@@ -21,6 +21,7 @@ export function AppSidebar({
   plan,
   isWali = false,
   isAdmin = false,
+  unreadCount = 0,
 }: {
   email: string;
   alias: string | null;
@@ -28,6 +29,7 @@ export function AppSidebar({
   plan: string;
   isWali?: boolean;
   isAdmin?: boolean;
+  unreadCount?: number;
 }) {
   const pathname = usePathname();
   const links = isWali
@@ -48,13 +50,18 @@ export function AppSidebar({
             <Link
               key={link.href}
               href={link.href}
-              className={`shrink-0 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+              className={`flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                 active
                   ? "bg-primary-light text-primary"
                   : "text-body hover:bg-cream hover:text-primary"
               }`}
             >
               {link.label}
+              {link.href === "/matches" && unreadCount > 0 && (
+                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-semibold text-white">
+                  {unreadCount}
+                </span>
+              )}
             </Link>
           );
         })}
