@@ -8,6 +8,7 @@ import { signOut } from "@/lib/actions/auth";
 const baseLinks = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/browse", label: "Browse" },
+  { href: "/shortlist", label: "Shortlist" },
   { href: "/requests", label: "Requests" },
   { href: "/matches", label: "Matches" },
   { href: "/viewed", label: "Who viewed you" },
