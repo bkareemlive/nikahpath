@@ -7,8 +7,9 @@ import { Logo } from "./Logo";
 import { Button } from "./Button";
 import { Container } from "./Container";
 import { nav, site } from "@/data/site";
+import { signOut } from "@/lib/actions/auth";
 
-export function Header() {
+export function Header({ isAuthed = false }: { isAuthed?: boolean }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -35,15 +36,33 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-3 xl:flex">
-          <Link
-            href={site.loginUrl}
-            className="text-sm font-medium text-body hover:text-primary"
-          >
-            Log in
-          </Link>
-          <Button href={site.registerUrl} size="md">
-            Create Profile
-          </Button>
+          {isAuthed ? (
+            <>
+              <form action={signOut}>
+                <button
+                  type="submit"
+                  className="text-sm font-medium text-body hover:text-primary"
+                >
+                  Sign out
+                </button>
+              </form>
+              <Button href={site.dashboardUrl} size="md">
+                Go to Dashboard
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link
+                href={site.loginUrl}
+                className="text-sm font-medium text-body hover:text-primary"
+              >
+                Log in
+              </Link>
+              <Button href={site.registerUrl} size="md">
+                Create Profile
+              </Button>
+            </>
+          )}
         </div>
 
         <button
@@ -77,10 +96,26 @@ export function Header() {
               </Link>
             ))}
             <div className="mt-3 flex flex-col gap-2">
-              <Button href={site.loginUrl} variant="secondary">
-                Log in
-              </Button>
-              <Button href={site.registerUrl}>Create Profile</Button>
+              {isAuthed ? (
+                <>
+                  <Button href={site.dashboardUrl}>Go to Dashboard</Button>
+                  <form action={signOut}>
+                    <button
+                      type="submit"
+                      className="w-full rounded-md border border-line px-5 py-2.5 text-sm font-semibold text-ink hover:border-primary hover:text-primary"
+                    >
+                      Sign out
+                    </button>
+                  </form>
+                </>
+              ) : (
+                <>
+                  <Button href={site.loginUrl} variant="secondary">
+                    Log in
+                  </Button>
+                  <Button href={site.registerUrl}>Create Profile</Button>
+                </>
+              )}
             </div>
           </Container>
         </div>
