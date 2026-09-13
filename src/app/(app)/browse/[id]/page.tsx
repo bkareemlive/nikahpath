@@ -158,6 +158,11 @@ export default async function MemberDetailPage({
       </div>
 
       <div className="mt-4 rounded-2xl border border-line bg-white p-6 shadow-card sm:p-8">
+        {target.is_demo && (
+          <p className="mb-4 inline-block rounded-full border border-dashed border-muted/60 px-3 py-1 text-xs font-medium text-muted">
+            Demo profile — used to preview NikahPath, not a real member.
+          </p>
+        )}
         <h1 className="font-display text-3xl font-semibold text-ink">
           {target.alias ?? target.public_ref ?? "Member"}
           {target.alias && (

@@ -13,6 +13,12 @@ export function MemberCard({ p }: { p: ProfileRow }) {
     p.has_children ? "Has children" : null,
   ].filter(Boolean) as string[];
 
+  const demoLabel = p.is_demo && (
+    <span className="rounded-full border border-dashed border-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted">
+      Demo profile
+    </span>
+  );
+
   return (
     <Link
       href={`/browse/${p.id}`}
@@ -44,8 +50,9 @@ export function MemberCard({ p }: { p: ProfileRow }) {
         )}
       </div>
 
-      {tags.length > 0 && (
+      {(tags.length > 0 || demoLabel) && (
         <div className="mt-3 flex flex-wrap gap-1.5">
+          {demoLabel}
           {tags.map((t) => (
             <span
               key={t}

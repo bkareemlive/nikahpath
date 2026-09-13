@@ -20,6 +20,7 @@ export interface ProfileRow {
   updated_at: string;
   role: "member" | "wali" | "admin";
   status: ProfileStatus;
+  is_demo: boolean;
   plan: Plan;
   plan_since: string | null;
   last_active_at: string | null;
