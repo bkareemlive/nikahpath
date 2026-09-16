@@ -1,7 +1,7 @@
 # Going live
 
 Where things stand as of 2026-09-13, and what's left before real members
-can use NikahPath. Ordered roughly by what blocks what.
+can use NikahPathway. Ordered roughly by what blocks what.
 
 ## 1. Finish what's in flight
 
@@ -49,7 +49,7 @@ steps are in [PAYMENTS.md](PAYMENTS.md); summary:
 
 ## 4. Hosting (Vercel)
 
-- [ ] Create the Vercel project from the `bkareemlive/nikahpath` GitHub
+- [ ] Create the Vercel project from the `bkareemlive/nikahpathway` GitHub
       repo (main branch = production deployment).
 - [ ] Set every env var from `.env.local` in the Vercel project settings —
       `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
@@ -60,7 +60,7 @@ steps are in [PAYMENTS.md](PAYMENTS.md); summary:
 - [ ] Set the project's Node.js version to 22 — `@supabase/supabase-js`
       is dropping support for Node 20 and below.
 - [ ] Point your custom domain (`site.url` in `src/data/site.ts` is
-      already `https://www.nikahpath.com`) at the Vercel project and wait
+      `https://nikahpathway.com`) at the Vercel project and wait
       for DNS + SSL to settle.
 - [ ] In Supabase Auth settings, add the production domain to the
       allowed **Redirect URLs** (used by password reset / email-change

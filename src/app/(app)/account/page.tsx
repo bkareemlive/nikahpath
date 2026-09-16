@@ -65,7 +65,7 @@ export default async function AccountPage() {
             Blocked members
           </h2>
           <p className="mt-1 text-sm text-muted">
-            You won&apos;t see each other anywhere on NikahPath, and neither of
+            You won&apos;t see each other anywhere on NikahPathway, and neither of
             you can send contact.
           </p>
           {blockedProfiles.length === 0 ? (

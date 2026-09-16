@@ -1,4 +1,4 @@
-// Creates the Stripe products + prices for NikahPath and prints the env lines
+// Creates the Stripe products + prices for NikahPathway and prints the env lines
 // to paste into .env.local. Idempotent-ish: it always creates new prices, so
 // run it once. Amounts mirror src/data/pricing.ts — keep them in sync.
 //
@@ -30,11 +30,11 @@ const dollars = (n) => Math.round(n * 100);
 
 async function main() {
   const fullAccess = await stripe.products.create({
-    name: "NikahPath Full Access",
+    name: "NikahPathway Full Access",
     description: "Subscription — send requests, match, chat, reach a guardian.",
   });
   const lifetime = await stripe.products.create({
-    name: "NikahPath Lifetime",
+    name: "NikahPathway Lifetime",
     description: "One-time — permanent access, no monthly fee.",
   });
 

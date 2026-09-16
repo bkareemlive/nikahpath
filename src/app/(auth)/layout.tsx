@@ -13,7 +13,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
       </main>
       <footer className="px-5 pb-8 text-center text-xs text-muted">
         <Link href="/" className="hover:text-primary">
-          ← Back to nikahpath.com
+          ← Back to nikahpathway.com
         </Link>
       </footer>
     </div>

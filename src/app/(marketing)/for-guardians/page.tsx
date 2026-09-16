@@ -7,7 +7,7 @@ import { site } from "@/data/site";
 export const metadata: Metadata = {
   title: "For Guardians",
   description:
-    "How a Wali takes part on NikahPath — what you can see, how conversations work, and how to raise a concern.",
+    "How a Wali takes part on NikahPathway — what you can see, how conversations work, and how to raise a concern.",
 };
 
 const points = [

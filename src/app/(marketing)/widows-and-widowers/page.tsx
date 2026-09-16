@@ -10,7 +10,7 @@ import { widowedMembers } from "@/data/profiles";
 export const metadata: Metadata = {
   title: "Widows & Widowers",
   description:
-    "A dedicated space on NikahPath for those who have been widowed — choose the category when you join, and connect with others who understand.",
+    "A dedicated space on NikahPathway for those who have been widowed — choose the category when you join, and connect with others who understand.",
 };
 
 const faqs = [

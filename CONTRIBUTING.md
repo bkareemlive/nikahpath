@@ -1,4 +1,4 @@
-# Working on NikahPath
+# Working on NikahPathway
 
 `main` is the integration branch and is always deployable. All changes land on
 `main` through a pull request from a short-lived branch — nothing is committed to

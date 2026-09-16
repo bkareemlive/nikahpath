@@ -1,14 +1,14 @@
 export const site = {
-  name: "NikahPath",
+  name: "NikahPathway",
   tagline: "A guided route to nikah.",
   description:
     "A marriage introduction service for practicing Muslims. Read full profiles first, involve the Wali from the start, and move towards a real meeting rather than an endless chat.",
-  url: "https://www.nikahpath.com",
+  url: "https://nikahpathway.com",
   loginUrl: "/login",
   registerUrl: "/register",
   dashboardUrl: "/dashboard",
-  instagram: "https://instagram.com/nikahpath",
-  email: "salam@nikahpath.com",
+  instagram: "https://instagram.com/nikahpathway",
+  email: "salam@nikahpathway.com",
   status: "A newly launched service",
   copyrightHolder: "Al-Fur'qan International Missionary",
   copyrightHolderUrl: "https://www.alfurqaninternational.org",

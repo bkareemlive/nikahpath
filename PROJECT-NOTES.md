@@ -2,12 +2,14 @@
 
 ## What this is
 
-A marketing website for **NikahPath**, a marriage introduction service for
-practicing Muslims. Operated by **Al-Fur'qan International Missionary**.
+A marriage introduction service for practicing Muslims, called
+**NikahPathway**. Operated by **Al-Fur'qan International Missionary**.
 
-Marketing pages only — no authentication and no application. All "Log in" and
-"Create profile" links point at a placeholder `app.nikahpath.com` subdomain
-configured in `src/data/site.ts`.
+This file describes the original marketing-only phase of the project (page
+set, copy, design). The site has since grown into a full application — auth,
+onboarding, browse, matches/chat, payments, admin dashboard — see
+`CONTRIBUTING.md` for the current workflow. Site config, including the
+domain, lives in `src/data/site.ts`.
 
 ## Scope
 
