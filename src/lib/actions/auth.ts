@@ -27,6 +27,33 @@ function safeNext(value: FormDataEntryValue | null): string {
   return next.startsWith("/") && !next.startsWith("//") ? next : "/dashboard";
 }
 
+/** Verifies a Cloudflare Turnstile token. No-ops (allows through) when
+ * TURNSTILE_SECRET_KEY isn't set, so local dev works without a widget. */
+async function verifyTurnstile(token: FormDataEntryValue | null): Promise<boolean> {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) return true;
+  if (typeof token !== "string" || !token) return false;
+
+  const h = await headers();
+  const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim();
+
+  const res = await fetch(
+    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        secret,
+        response: token,
+        ...(ip ? { remoteip: ip } : {}),
+      }),
+    },
+  );
+  if (!res.ok) return false;
+  const data = (await res.json()) as { success?: boolean };
+  return Boolean(data.success);
+}
+
 export async function signIn(
   _prev: AuthState,
   formData: FormData,
@@ -54,6 +81,11 @@ export async function signUp(
   const password = passwordSchema.safeParse(formData.get("password"));
   if (!email.success) return { error: email.error.issues[0].message };
   if (!password.success) return { error: password.error.issues[0].message };
+
+  const captchaOk = await verifyTurnstile(formData.get("cf-turnstile-response"));
+  if (!captchaOk) {
+    return { error: "Verification failed. Please try again." };
+  }
 
   const supabase = await createClient();
   const origin = await siteOrigin();
