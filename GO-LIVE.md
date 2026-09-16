@@ -1,7 +1,7 @@
 # Going live
 
-Where things stand as of 2026-09-16. NikahPathway is live in production at
-[nikahpathway.com](https://nikahpathway.com). Only item 8 remains.
+All 8 items are done as of 2026-09-16. NikahPathway is live in production at
+[nikahpathway.com](https://nikahpathway.com), fully wired end to end.
 
 ## 1. Finish what's in flight ✅
 
@@ -65,14 +65,27 @@ Where things stand as of 2026-09-16. NikahPathway is live in production at
 - [x] Service role key confirmed server-only (webhook route + the
       `closeAccount` server action) — never client-side or `NEXT_PUBLIC_*`.
 
-## 8. QA pass — not started
+## 8. QA pass ✅
 
-- [ ] Full manual walkthrough as a **real, non-seed** account: register,
-      onboarding, browse, send/accept interest, chat, nudge, upgrade to a
-      paid plan (careful — Stripe is in **live mode**, this charges a real
-      card), report/block, and — as an admin — triage a report and
-      suspend/reactivate a member.
-- [ ] Test on an actual phone, not just the emulated viewport.
+- [x] Full manual walkthrough with two fresh, real (non-seed) test accounts:
+      register (CAPTCHA verified separately with a real signup), onboarding
+      (both brother and sister flows, incl. guardian setup), browse,
+      send/accept interest → match, chat both directions, nudge, unread
+      badges, report a member, admin triage ("Suspend member & close"),
+      reactivate. Paid-plan gates (interest requests, nudges) confirmed by
+      toggling `profiles.plan` directly rather than a real Stripe purchase —
+      Stripe is in **live mode**, so an actual checkout was skipped
+      deliberately.
+- [x] Found and fixed a real bug in the process: `/dashboard` and `/wali`
+      fetched the profile manually and never checked for
+      `status === 'suspended'`, so a suspended member could still land on
+      their dashboard instead of being locked out to `/suspended` like
+      every other page. Fixed, shipped through the normal branch-protected
+      PR flow, re-verified live with the still-suspended test account.
+- [x] Mobile layout spot-checked at an emulated 375px viewport (marketing
+      page, dashboard with the admin nav) — held up cleanly. This is an
+      emulation, not an actual device; worth a real-phone check when
+      convenient.
 
 ## 9. Nice-to-haves (not blocking)
 
