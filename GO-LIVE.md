@@ -109,3 +109,4 @@ Supabase address — not something to rely on for a live product.
       production runtime errors beyond Vercel's own logs.
 - [ ] `sitemap.xml` / `robots.txt` for SEO.
 - [ ] `gh auth login` so PR status/checks show up without manual copies.
+# verify branch protection is active
