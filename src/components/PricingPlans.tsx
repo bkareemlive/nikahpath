@@ -76,8 +76,8 @@ export function PricingPlans({
         <div className="mx-auto mb-8 flex max-w-2xl items-center justify-center gap-2 rounded-xl border border-primary/30 bg-primary-tint px-4 py-3 text-center text-sm font-medium text-primary-dark">
           <span aria-hidden>🎉</span>
           <span>
-            {promo.name}: Full Access ${promo.fullAccessMonthly}/mo and Lifetime
-            ${promo.lifetime} one-time — for the {promo.durationLabel}.
+            {promo.name}: Full Access ${promo.fullAccessMonthly.toFixed(2)}/mo and
+            Lifetime ${promo.lifetime.toFixed(2)} one-time — {promo.durationLabel}.
           </span>
         </div>
       )}
