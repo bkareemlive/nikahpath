@@ -67,7 +67,8 @@ function SisterBlock({ s }: { s: SisterMini | null }) {
 }
 
 export default async function WaliInboxPage() {
-  const { supabase, user } = await getSessionAndProfile();
+  const { supabase, user, profile } = await getSessionAndProfile();
+  if (profile?.status === "suspended") redirect("/suspended");
 
   const { data: waliRows } = await supabase
     .from("independent_walis")

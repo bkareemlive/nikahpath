@@ -27,6 +27,8 @@ export default async function DashboardPage({
       .eq("user_id", user.id),
   ]);
 
+  if (profile?.status === "suspended") redirect("/suspended");
+
   if (!profile || profile.status === "draft") {
     if ((waliCount ?? 0) > 0) {
       return (
