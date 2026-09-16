@@ -12,7 +12,7 @@ export const promo = {
   durationLabel: "while the offer lasts",
   fullAccessMonthly: 14.99, // per month during the promo
   fullAccessSixMonth: 90, // total for 6 months during the promo
-  lifetime: 149.9, // one-time during the promo
+  lifetime: 149.99, // one-time during the promo
 };
 
 export const planFeatures = [
@@ -58,7 +58,7 @@ export const planFeatures = [
 export const pricingFaq = [
   {
     q: "How long does the launch promo last?",
-    a: "The launch promo has no fixed end date — it's available while it lasts. Right now Full Access is $14.99 a month and Lifetime is a one-time $149.90. A Lifetime plan bought at the promo price stays at that price for good.",
+    a: "The launch promo has no fixed end date — it's available while it lasts. Right now Full Access is $14.99 a month and Lifetime is a one-time $149.99. A Lifetime plan bought at the promo price stays at that price for good.",
   },
   {
     q: "How is Full Access different from Lifetime?",

@@ -47,7 +47,7 @@ async function main() {
     STRIPE_PRICE_LIFETIME: (await mk(lifetime.id, dollars(229.99))).id,
     STRIPE_PRICE_FULL_MONTHLY_PROMO: (await mk(fullAccess.id, dollars(14.99), { interval: "month" })).id,
     STRIPE_PRICE_FULL_6MO_PROMO: (await mk(fullAccess.id, dollars(90), { interval: "month", interval_count: 6 })).id,
-    STRIPE_PRICE_LIFETIME_PROMO: (await mk(lifetime.id, dollars(149.9))).id,
+    STRIPE_PRICE_LIFETIME_PROMO: (await mk(lifetime.id, dollars(149.99))).id,
   };
 
   console.log("\nAdd these to .env.local:\n");

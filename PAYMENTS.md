@@ -9,7 +9,7 @@ keys below are set — the buttons then start real Stripe Checkout.
 | --- | --- | --- | --- |
 | Full Access — monthly | subscription | $24.99/mo | $14.99/mo |
 | Full Access — 6 months | subscription (every 6 mo) | $99.99 | $90 |
-| Lifetime | one-time | $229.99 | $149.90 |
+| Lifetime | one-time | $229.99 | $149.99 |
 
 Amounts live in `src/data/pricing.ts`. The promo is toggled by `promo.active`
 in that file; while active, checkout uses the `*_PROMO` price ids. The promo
