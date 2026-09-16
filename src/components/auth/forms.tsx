@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Script from "next/script";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import {
@@ -10,6 +11,8 @@ import {
   signInWithOAuth,
   type AuthState,
 } from "@/lib/actions/auth";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 const inputClass =
   "w-full rounded-md border border-line bg-white px-3 py-2.5 text-sm text-ink outline-none placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20";
@@ -150,9 +153,20 @@ export function RegisterForm({ next }: { next: string }) {
           />
           <span className="text-xs font-normal text-muted">At least 8 characters.</span>
         </label>
+        {TURNSTILE_SITE_KEY && (
+          <div className="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} />
+        )}
         <Notice state={state} />
         <SubmitButton>Create account</SubmitButton>
       </form>
+      {TURNSTILE_SITE_KEY && (
+        <Script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+          strategy="afterInteractive"
+          async
+          defer
+        />
+      )}
 
       <p className="mt-4 text-center text-xs text-muted">
         By continuing you agree to our{" "}
