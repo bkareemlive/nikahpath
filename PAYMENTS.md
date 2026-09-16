@@ -7,12 +7,13 @@ keys below are set — the buttons then start real Stripe Checkout.
 
 | Plan | Type | Regular | Launch promo |
 | --- | --- | --- | --- |
-| Full Access — monthly | subscription | $24.99/mo | $15/mo |
+| Full Access — monthly | subscription | $24.99/mo | $14.99/mo |
 | Full Access — 6 months | subscription (every 6 mo) | $99.99 | $90 |
-| Lifetime | one-time | $229.99 | $150 |
+| Lifetime | one-time | $229.99 | $149.90 |
 
 Amounts live in `src/data/pricing.ts`. The promo is toggled by `promo.active`
-in that file; while active, checkout uses the `*_PROMO` price ids.
+in that file; while active, checkout uses the `*_PROMO` price ids. The promo
+has no fixed end date — it's open-ended, available while it lasts.
 
 ## What gating enforces (`src/lib/plan.ts`)
 
