@@ -93,3 +93,14 @@ All 8 items are done as of 2026-09-16. NikahPathway is live in production at
 - [ ] Error tracking (Sentry or similar) — nothing currently catches
       production runtime errors beyond Vercel's own logs.
 - [ ] `sitemap.xml` / `robots.txt` for SEO.
+
+## 10. Marketing collateral ✅
+
+- [x] Print flyer + matching social-media graphic, built as a design canvas:
+      [claude.ai/artifact/BqXTYmZWxxzj6JedgFzxWu](https://claude.ai/artifact/BqXTYmZWxxzj6JedgFzxWu).
+      Two artboards — a US Letter print flyer (notice-board ready) and a
+      1080×1080 square post — both carrying the real logo/palette/type,
+      the headline "For marriage-minded Muslims.", a real scannable QR
+      code to `nikahpathway.com`, and the "A product of: Al-Fur'qan
+      International Missionary" credit. Export to PDF (print) or PNG
+      (social) from the canvas's own toolbar.
