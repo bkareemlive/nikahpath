@@ -52,7 +52,7 @@ export default async function ViewedPage() {
             {total === 1 ? "member has" : "members have"} looked at your profile.
           </p>
           <p className="mx-auto mt-4 max-w-sm text-sm text-muted">
-            See exactly who — and when — with Full Access or Lifetime.
+            See exactly who, and when, with Full Access or Lifetime.
           </p>
           <div className="mt-5">
             <Link

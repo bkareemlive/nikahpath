@@ -19,12 +19,12 @@ const fraunces = Fraunces({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — A Marriage Introduction Service for Practicing Muslims`,
+    default: `${site.name} · A Marriage Introduction Service for Practicing Muslims`,
     template: `%s · ${site.name}`,
   },
   description: site.description,
   openGraph: {
-    title: `${site.name} — A Marriage Introduction Service for Practicing Muslims`,
+    title: `${site.name} · A Marriage Introduction Service for Practicing Muslims`,
     description: site.description,
     url: site.url,
     siteName: site.name,

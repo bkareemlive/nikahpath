@@ -177,7 +177,7 @@ export function OnboardingWizard({ walis }: { walis: WaliOption[] }) {
           </div>
 
           <label className={labelCls}>
-            Display name <span className={hintCls}>(optional — a first name or kunya)</span>
+            Display name <span className={hintCls}>(optional: a first name or kunya)</span>
             <input
               value={data.alias ?? ""}
               onChange={set("alias")}

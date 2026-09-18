@@ -350,7 +350,7 @@ export function ProfileForm({
             className="mt-0.5"
           />
           <span>
-            <span className="font-medium text-ink">Pause my profile</span> — hide it
+            <span className="font-medium text-ink">Pause my profile:</span> hide it
             from Browse and stop receiving new interest. Existing matches and
             conversations stay.
           </span>
