@@ -119,7 +119,7 @@ export default async function ConversationPage({
 
       {(nudgedYou ?? 0) > 0 && (
         <p className="mt-3 rounded-lg border border-primary/25 bg-primary-light px-4 py-2.5 text-sm text-primary-dark">
-          👋 They nudged you — a gentle reminder they&apos;re still keen. (Nudges
+          👋 They nudged you: a gentle reminder they&apos;re still keen. (Nudges
           can be sent once every {NUDGE_COOLDOWN_HOURS}h.)
         </p>
       )}
@@ -129,7 +129,7 @@ export default async function ConversationPage({
           <span className="font-medium text-ink">Guardian:</span>{" "}
           {other.wali_name}
           {other.wali_relationship ? ` (${other.wali_relationship})` : ""}
-          {other.wali_contact ? ` — ${other.wali_contact}` : ""}
+          {other.wali_contact ? ` · ${other.wali_contact}` : ""}
         </div>
       )}
 

@@ -94,8 +94,8 @@ export default async function MatchesPage() {
 
       {matches.length === 0 ? (
         <p className="mt-8 rounded-xl border border-line bg-white p-6 text-sm text-muted">
-          No matches yet. When someone accepts your interest — or you accept
-          theirs — the conversation opens here.
+          No matches yet. When someone accepts your interest, or you accept
+          theirs, the conversation opens here.
         </p>
       ) : (
         <ul className="mt-8 space-y-3">

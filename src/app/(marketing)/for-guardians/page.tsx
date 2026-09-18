@@ -7,7 +7,7 @@ import { site } from "@/data/site";
 export const metadata: Metadata = {
   title: "For Guardians",
   description:
-    "How a Wali takes part on NikahPathway — what you can see, how conversations work, and how to raise a concern.",
+    "How a Wali takes part on NikahPathway: what you can see, how conversations work, and how to raise a concern.",
 };
 
 const points = [
@@ -25,7 +25,7 @@ const points = [
   },
   {
     q: "Raising a concern",
-    a: `If something is not right — a member misrepresenting themselves, pressure to move off-platform too quickly, anything improper — email ${site.email} and the team will look into it.`,
+    a: `If something is not right (a member misrepresenting themselves, pressure to move off-platform too quickly, anything improper), email ${site.email} and the team will look into it.`,
   },
 ];
 

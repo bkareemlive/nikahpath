@@ -24,12 +24,12 @@ export default async function ProfilePage() {
         <h1 className="font-display text-3xl font-semibold text-ink">My profile</h1>
         {profile.status === "paused" && (
           <span className="rounded-full bg-cream-deep px-2.5 py-1 text-xs font-medium text-body">
-            Paused — hidden from Browse
+            Paused, hidden from Browse
           </span>
         )}
       </div>
       <p className="mt-1 text-sm text-muted">
-        Everything here is what other members read. Keep it accurate — you can
+        Everything here is what other members read. Keep it accurate; you can
         change it any time.{" "}
         <Link href="/dashboard" className="font-medium text-primary hover:underline">
           Back to dashboard

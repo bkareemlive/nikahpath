@@ -21,7 +21,7 @@ export default function MembersPage() {
           <SectionHeading
             eyebrow="Members"
             title="A look at who is here"
-            description="A sample of current members, shown the way every profile is shown — as writing, with no photo. Joining is free and opens the full list."
+            description="A sample of current members, shown the way every profile is shown: as writing, with no photo. Joining is free and opens the full list."
           />
           <div className="mt-8">
             <Button href={site.registerUrl}>Join free to see everyone</Button>

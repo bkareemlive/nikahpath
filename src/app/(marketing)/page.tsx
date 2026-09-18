@@ -11,12 +11,12 @@ const steps = [
   {
     n: 1,
     title: "Write a real profile",
-    body: "A few paragraphs on your practice, your family and what you are looking for. No photo — this is what people read first.",
+    body: "A few paragraphs on your practice, your family and what you are looking for. No photo: this is what people read first.",
   },
   {
     n: 2,
     title: "Read and reach out",
-    body: "Look through the members, send interest, and open a conversation when both sides agree — with the guardian able to follow along.",
+    body: "Look through the members, send interest, and open a conversation when both sides agree, with the guardian able to follow along.",
   },
   {
     n: 3,
@@ -27,7 +27,7 @@ const steps = [
 
 const rules = [
   "The Wali is part of it, start to finish",
-  "Profiles are text — never photos",
+  "Profiles are text, never photos",
   "Nothing on the platform outside the sharia",
   "Your name stays private until you share it",
 ];
@@ -116,7 +116,7 @@ export default function HomePage() {
           <SectionHeading
             eyebrow="Members"
             title="Judge the person, not a photo"
-            description="A few current members, shown exactly as every profile appears — in writing, with no photo."
+            description="A few current members, shown exactly as every profile appears: in writing, with no photo."
           />
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
             <ProfileCard profile={sisters[0]} />
@@ -163,7 +163,7 @@ export default function HomePage() {
             {[
               {
                 title: "You are a guardian",
-                body: "The Wali has a defined role — able to follow conversations, and the point of contact when things get serious.",
+                body: "The Wali has a defined role: able to follow conversations, and the point of contact when things get serious.",
                 href: "/for-guardians",
                 cta: "For guardians",
               },
@@ -207,7 +207,7 @@ export default function HomePage() {
                 Someone is hoping to read your profile.
               </h2>
               <p className="mt-4 text-white/80">
-                {site.status} from {site.copyrightHolder}. Joining is free — write
+                {site.status} from {site.copyrightHolder}. Joining is free: write
                 your profile and start reading today.
               </p>
               <div className="mt-8 flex justify-center">

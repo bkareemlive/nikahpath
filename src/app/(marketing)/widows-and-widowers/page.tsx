@@ -10,7 +10,7 @@ import { widowedMembers } from "@/data/profiles";
 export const metadata: Metadata = {
   title: "Widows & Widowers",
   description:
-    "A dedicated space on NikahPathway for those who have been widowed — choose the category when you join, and connect with others who understand.",
+    "A dedicated space on NikahPathway for those who have been widowed. Choose the category when you join, and connect with others who understand.",
 };
 
 const faqs = [
@@ -60,7 +60,7 @@ export default function WidowsAndWidowersPage() {
           <div className="prose-nikah mt-4">
             <p>
               Marrying again after losing a spouse comes with its own
-              considerations — children, extended family, an iddah to observe,
+              considerations: children, extended family, an iddah to observe,
               and a grief that does not run to anyone else&apos;s timetable.
             </p>
             <p>

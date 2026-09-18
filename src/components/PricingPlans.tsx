@@ -77,7 +77,7 @@ export function PricingPlans({
           <span aria-hidden>🎉</span>
           <span>
             {promo.name}: Full Access ${promo.fullAccessMonthly.toFixed(2)}/mo and
-            Lifetime ${promo.lifetime.toFixed(2)} one-time — {promo.durationLabel}.
+            Lifetime ${promo.lifetime.toFixed(2)} one-time, {promo.durationLabel}.
           </span>
         </div>
       )}

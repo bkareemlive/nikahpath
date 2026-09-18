@@ -159,7 +159,7 @@ export default async function RequestsPage() {
                     {p.alias ? `${p.alias} · ${p.public_ref}` : p.public_ref}
                   </span>
                   <Link href="/matches" className="font-medium text-primary hover:underline">
-                    Matched — open →
+                    Matched: open →
                   </Link>
                 </div>
               );

@@ -105,14 +105,14 @@ export default async function DashboardPage({
     <div>
       {upgraded && (
         <p className="mb-6 rounded-xl border border-primary/25 bg-primary-light px-4 py-3 text-sm text-primary-dark">
-          Thank you. Your payment went through — your plan will activate within a
-          moment.
+          Thank you. Your payment went through, and your plan will activate
+          within a moment.
         </p>
       )}
       {(nudgeCount ?? 0) > 0 && (
         <p className="mb-6 rounded-xl border border-primary/25 bg-primary-light px-4 py-3 text-sm text-primary-dark">
           👋 {nudgeCount} {nudgeCount === 1 ? "person" : "people"} nudged you in
-          the last week —{" "}
+          the last week, so{" "}
           <Link href="/matches" className="font-medium underline">
             check your matches
           </Link>

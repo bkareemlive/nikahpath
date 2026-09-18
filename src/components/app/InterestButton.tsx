@@ -35,7 +35,7 @@ export function InterestButton({
         href="/matches"
         className="inline-flex h-11 items-center rounded-md bg-primary px-6 text-sm font-semibold text-white hover:bg-primary-dark"
       >
-        You have matched — open the conversation →
+        You have matched: open the conversation →
       </Link>
     );
   }
@@ -46,7 +46,7 @@ export function InterestButton({
         href="/requests"
         className="inline-flex h-11 items-center rounded-md bg-primary px-6 text-sm font-semibold text-white hover:bg-primary-dark"
       >
-        They have expressed interest — respond in Requests →
+        They have expressed interest: respond in Requests →
       </Link>
     );
   }
@@ -74,7 +74,7 @@ export function InterestButton({
         name="message"
         rows={2}
         maxLength={500}
-        placeholder="Optional note — only shown if they accept your request."
+        placeholder="Optional note, only shown if they accept your request."
         className="w-full rounded-md border border-line bg-white px-3 py-2.5 text-sm text-ink outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
       />
       <div>

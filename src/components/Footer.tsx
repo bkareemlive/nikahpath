@@ -12,8 +12,8 @@ export function Footer() {
             <Logo />
             <p className="mt-4 text-sm leading-relaxed text-muted">
               {site.tagline} A marriage introduction service for practicing
-              Muslims — Wali-led, text-based profiles, and a focus on meeting in
-              person.
+              Muslims, Wali-led, with text-based profiles and a focus on
+              meeting in person.
             </p>
           </div>
 
@@ -82,7 +82,7 @@ export function Footer() {
             </a>
             . All rights reserved.
           </p>
-          <p>{site.name} — a newly launched marriage service, Wali-led and free to join.</p>
+          <p>{site.name}: a newly launched marriage service, Wali-led and free to join.</p>
         </div>
       </Container>
     </footer>

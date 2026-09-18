@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 const NOTICES: Record<string, { tone: "ok" | "warn" | "err"; text: string }> = {
-  canceled: { tone: "warn", text: "Checkout was cancelled — no charge was made." },
+  canceled: { tone: "warn", text: "Checkout was cancelled. No charge was made." },
   payments_unavailable: { tone: "err", text: "Payments are not set up yet. Please check back soon." },
   price_missing: { tone: "err", text: "That plan is not available for purchase right now." },
   checkout_failed: { tone: "err", text: "Could not start checkout. Please try again." },

@@ -14,7 +14,7 @@ export default function PrivacyPage() {
         <h1 className="font-display text-4xl font-semibold tracking-tight text-ink">
           Privacy Policy
         </h1>
-        <p className="mt-3 text-sm text-muted">Last updated: 16 September 2026</p>
+        <p className="mt-3 text-sm text-muted">Last updated: 18 September 2026</p>
 
         <div className="prose-nikah mt-10">
           <p>
@@ -26,33 +26,33 @@ export default function PrivacyPage() {
           <h2>What we collect</h2>
           <ul>
             <li>
-              <strong>Account details</strong> — the email address and password
+              <strong>Account details</strong>: the email address and password
               you sign up with.
             </li>
             <li>
-              <strong>Profile information</strong> — what you write when
+              <strong>Profile information</strong>: what you write when
               creating and editing your profile: age, ethnicity, location,
               marital status, religious practice, what you are looking for, and
               similar details you choose to share.
             </li>
             <li>
-              <strong>Guardian (Wali) details</strong> — if you have a family
+              <strong>Guardian (Wali) details</strong>: if you have a family
               guardian, the name and contact details you provide for them; if
               you request an independent Wali, that request and the Wali&apos;s
               response.
             </li>
             <li>
-              <strong>Messages</strong> — the content of interest requests and
+              <strong>Messages</strong>: the content of interest requests and
               conversations with other members.
             </li>
             <li>
-              <strong>Payment information</strong> — if you subscribe to a paid
+              <strong>Payment information</strong>: if you subscribe to a paid
               plan, Stripe processes your payment; we receive confirmation of
               your plan and a Stripe customer reference, never your full card
               details.
             </li>
             <li>
-              <strong>Usage data</strong> — things like when you were last
+              <strong>Usage data</strong>: things like when you were last
               active and which profiles you have viewed, used to run features
               such as &ldquo;online now&rdquo; and &ldquo;who viewed you&rdquo;.
             </li>
@@ -61,10 +61,10 @@ export default function PrivacyPage() {
           <h2>How we use it</h2>
           <p>We use your information to:</p>
           <ul>
-            <li>run the core service — matching, interest requests, messaging, and guardian involvement;</li>
+            <li>run the core service: matching, interest requests, messaging, and guardian involvement;</li>
             <li>process payments and manage your plan;</li>
             <li>respond to reports and enforce our <a href="/terms">Terms of Service</a>;</li>
-            <li>send you service emails — account confirmation, password resets, and activity on your account; and</li>
+            <li>send you service emails: account confirmation, password resets, and activity on your account; and</li>
             <li>keep the service secure and working as intended.</li>
           </ul>
           <p>We do not use your information for advertising, and we do not sell it to anyone.</p>
@@ -90,7 +90,7 @@ export default function PrivacyPage() {
             You can edit your profile, pause your visibility, or unblock/report
             members at any time from your account. Closing your account from{" "}
             <a href="/account">Account settings</a> permanently and immediately
-            deletes your profile, messages, and related data — this cannot be
+            deletes your profile, messages, and related data; this cannot be
             undone. You can also request deletion by contacting{" "}
             <a href={`mailto:${site.email}`}>{site.email}</a>.
           </p>

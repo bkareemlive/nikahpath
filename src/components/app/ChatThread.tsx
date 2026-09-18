@@ -140,7 +140,7 @@ export function ChatThread({
       <div ref={scrollRef} className="flex-1 space-y-2 overflow-y-auto p-5">
         {messages.length === 0 && (
           <p className="mt-8 text-center text-sm text-muted">
-            No messages yet. Say salaam — keep it purposeful and respectful.
+            No messages yet. Say salaam, and keep it purposeful and respectful.
           </p>
         )}
         {(() => {

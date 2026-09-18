@@ -22,7 +22,7 @@ export const sisters: Profile[] = [
     location: "Casablanca, Morocco",
     status: "Online now",
     tags: ["Prays 5x daily", "Sunni", "Hijab"],
-    bio: "Assalamualaykum. I was raised in a practising household and have spent the last few years deepening my knowledge of the deen through weekly classes. I would describe myself as calm, family-oriented and a little introverted — happiest with a book, my sisters and a good cup of mint tea. I'm looking for someone on the same journey who wants to grow together, raise a righteous family, and keep Allah at the centre of the home.",
+    bio: "Assalamualaykum. I was raised in a practising household and have spent the last few years deepening my knowledge of the deen through weekly classes. I would describe myself as calm, family-oriented and a little introverted, happiest with a book, my sisters and a good cup of mint tea. I'm looking for someone on the same journey who wants to grow together, raise a righteous family, and keep Allah at the centre of the home.",
   },
   {
     id: "F1987",
@@ -43,7 +43,7 @@ export const sisters: Profile[] = [
     location: "Nairobi, Kenya",
     status: "22m ago",
     tags: ["Prays 5x daily", "Sunni"],
-    bio: "I'm a soft-natured, loyal person who values family above almost everything. I work in accounting and would be happy to continue part-time or stop after marriage if the finances allow, in shaa Allah. I love long walks, halal baking and memorising Qur'an — currently on my 12th juz. Looking for a responsible brother ready for marriage in the near term.",
+    bio: "I'm a soft-natured, loyal person who values family above almost everything. I work in accounting and would be happy to continue part-time or stop after marriage if the finances allow, in shaa Allah. I love long walks, halal baking and memorising Qur'an, currently on my 12th juz. Looking for a responsible brother ready for marriage in the near term.",
   },
   {
     id: "F2005",
@@ -76,7 +76,7 @@ export const sisters: Profile[] = [
     location: "Singapore",
     status: "5h ago",
     tags: ["Prays 5x daily", "Sunni", "Hafidha"],
-    bio: "Completed my hifdh at 19, alhamdulillah, and now maintain it alongside a part-time role in web design. Family is everything to me — I'm the eldest of four. I want a husband who will lead the household with gentleness and help me keep my Qur'an strong. Looking to marry within 6 months in shaa Allah.",
+    bio: "Completed my hifdh at 19, alhamdulillah, and now maintain it alongside a part-time role in web design. Family is everything to me; I'm the eldest of four. I want a husband who will lead the household with gentleness and help me keep my Qur'an strong. Looking to marry within 6 months in shaa Allah.",
   },
   {
     id: "F2088",
@@ -86,7 +86,7 @@ export const sisters: Profile[] = [
     location: "Jeddah, Saudi Arabia",
     status: "8h ago",
     tags: ["Prays 5x daily", "Sunni"],
-    bio: "Pharmacist living in Saudi Arabia, originally from Cairo. Practising, ambitious and family-minded. I enjoy travel, calligraphy and volunteering at the local masjid. Seeking someone settled, God-fearing and ready to build — ideally staying in the Gulf.",
+    bio: "Pharmacist living in Saudi Arabia, originally from Cairo. Practising, ambitious and family-minded. I enjoy travel, calligraphy and volunteering at the local masjid. Seeking someone settled, God-fearing and ready to build, ideally staying in the Gulf.",
   },
   {
     id: "F1902",
@@ -122,7 +122,7 @@ export const sisters: Profile[] = [
     tags: ["Prays 5x daily", "Sunni", "Two children"],
     lifeStage: "widowed",
     needsIndependentWali: true,
-    bio: "Widowed three years ago, two teenage children at home. A revert of many years with no Muslim family, so I would need an appointed Wali to represent me. Calm, settled, and not in a rush — looking for a patient companion for the years ahead.",
+    bio: "Widowed three years ago, two teenage children at home. A revert of many years with no Muslim family, so I would need an appointed Wali to represent me. Calm, settled, and not in a rush, looking for a patient companion for the years ahead.",
   },
   {
     id: "F2295",
@@ -168,7 +168,7 @@ export const brothers: Profile[] = [
     location: "Minneapolis, United States",
     status: "Online now",
     tags: ["Muscular", "Prays 5x daily", "Salafi"],
-    bio: "Born and raised in Minnesota, working as a personal trainer while I finish a sports science qualification. Fairly quiet, disciplined, and happy with a simple routine. I am looking to marry soon rather than let it drift, and I take the provider role seriously — the household costs would be on me.",
+    bio: "Born and raised in Minnesota, working as a personal trainer while I finish a sports science qualification. Fairly quiet, disciplined, and happy with a simple routine. I am looking to marry soon rather than let it drift, and I take the provider role seriously: the household costs would be on me.",
   },
   {
     id: "M3305",
@@ -189,7 +189,7 @@ export const brothers: Profile[] = [
     location: "Rabat, Morocco",
     status: "40m ago",
     tags: ["Tall", "Prays 5x daily", "Sunni"],
-    bio: "Business owner (import/export), divorced, no children. Practising, ambitious and calm under pressure. I value honesty, loyalty and a peaceful home. Looking for a righteous wife, 24–34, to build a family with — happy to settle in Morocco or the Gulf later.",
+    bio: "Business owner (import/export), divorced, no children. Practising, ambitious and calm under pressure. I value honesty, loyalty and a peaceful home. Looking for a righteous wife, 24–34, to build a family with, happy to settle in Morocco or the Gulf later.",
   },
   {
     id: "M3599",
@@ -211,7 +211,7 @@ export const brothers: Profile[] = [
     location: "Abu Dhabi, United Arab Emirates",
     status: "3h ago",
     tags: ["Sporty", "Prays 5x daily", "Salafi"],
-    bio: "IT project manager, settled in Abu Dhabi with my own flat and planning to stay in the region. I have been trying to be more deliberate about my habits and my time. Far from perfect, but making an effort — I would like someone who wants to improve alongside me and can keep things light while we do.",
+    bio: "IT project manager, settled in Abu Dhabi with my own flat and planning to stay in the region. I have been trying to be more deliberate about my habits and my time. Far from perfect, but making an effort. I would like someone who wants to improve alongside me and can keep things light while we do.",
   },
   {
     id: "M3620",

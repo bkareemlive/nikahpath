@@ -98,7 +98,7 @@ export async function respondToRequest(
       .eq("id", requestId.data)
       .maybeSingle<{ sender_id: string }>();
     if (req && (await isBlockedBetween(supabase, user.id, req.sender_id))) {
-      return { error: "You cannot accept this — one of you has blocked the other." };
+      return { error: "You cannot accept this: one of you has blocked the other." };
     }
 
     const { error } = await supabase.rpc("accept_interest_request", {

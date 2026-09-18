@@ -14,7 +14,7 @@ export default function TermsPage() {
         <h1 className="font-display text-4xl font-semibold tracking-tight text-ink">
           Terms of Service
         </h1>
-        <p className="mt-3 text-sm text-muted">Last updated: 16 September 2026</p>
+        <p className="mt-3 text-sm text-muted">Last updated: 18 September 2026</p>
 
         <div className="prose-nikah mt-10">
           <p>
@@ -45,7 +45,7 @@ export default function TermsPage() {
             {site.name} is a marriage introduction service, not a dating or
             social app. Profiles are text only; we do not host photographs on
             member profiles. Every member is expected to keep a guardian (Wali)
-            involved as the connection develops — either their own family Wali,
+            involved as the connection develops, either their own family Wali,
             or an appointed Wali selected from our register for sisters without
             one available. We facilitate the introduction and the guardian&apos;s
             involvement; we are not a party to, and do not perform, any marriage
@@ -80,7 +80,7 @@ export default function TermsPage() {
             pricing and what each plan includes. Full Access renews
             automatically at the cadence you choose (monthly or every six
             months) until you cancel; Lifetime is a one-time payment. Payments
-            are processed by Stripe — we do not store your card details. You can
+            are processed by Stripe; we do not store your card details. You can
             manage or cancel a subscription at any time from your account, which
             takes effect at the end of the current billing period.
           </p>
@@ -107,7 +107,7 @@ export default function TermsPage() {
           <p>
             You can report or block another member directly from their profile.
             Our team reviews reports and may, at our discretion, suspend or
-            close an account that has breached these terms — with or without
+            close an account that has breached these terms, with or without
             prior notice, depending on severity. A suspended account is hidden
             from other members and loses access to the service until the
             suspension is lifted.
@@ -117,7 +117,7 @@ export default function TermsPage() {
           <p>
             You keep ownership of what you write on your profile and in
             messages. By posting it, you give us a licence to display it to
-            other members as the service is designed to work — for example,
+            other members as the service is designed to work: for example,
             showing your profile to members of the opposite gender who match
             your filters, or a message to the person you are messaging.
           </p>
@@ -128,7 +128,7 @@ export default function TermsPage() {
             structured, guardian-led way to find each other, and we take that
             seriously. We do not, however, guarantee that you will find a match,
             that a match will lead to marriage, or that any member&apos;s
-            profile, intentions, or guardian information is accurate — you are
+            profile, intentions, or guardian information is accurate; you are
             responsible for your own due diligence.
           </p>
 

@@ -48,7 +48,7 @@ export default function ApproachPage() {
           <SectionHeading
             eyebrow="The approach"
             title="A short process with a clear finish line"
-            description="How the service works, the rules it runs on, and who stands behind it — on one page."
+            description="How the service works, the rules it runs on, and who stands behind it, on one page."
           />
         </Container>
       </section>
@@ -65,7 +65,7 @@ export default function ApproachPage() {
               the search with the seriousness it deserves.
             </p>
             <p>
-              {site.name} sits in between — a proper introduction service, run on
+              {site.name} sits in between: a proper introduction service, run on
               Islamic principles, where marriage is the assumption from the first
               message and the guardian is part of it throughout.
             </p>

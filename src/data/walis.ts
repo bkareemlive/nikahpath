@@ -94,7 +94,7 @@ export const independentWaliRules = [
   },
   {
     title: "Grounded in the Sunnah",
-    body: "The service follows the position that a woman with no Wali has one appointed for her — as in the words of the Prophet Muhammad ﷺ, \"there is no marriage without a Wali\" and \"the authority is the Wali of the one who has no Wali.\" Where no Islamic authority is available, a trustworthy Muslim man such as a local imam takes that place.",
+    body: "The service follows the position that a woman with no Wali has one appointed for her, as in the words of the Prophet Muhammad ﷺ, \"there is no marriage without a Wali\" and \"the authority is the Wali of the one who has no Wali.\" Where no Islamic authority is available, a trustworthy Muslim man such as a local imam takes that place.",
   },
   {
     title: "The sister stays in control",
